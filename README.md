@@ -22,8 +22,5 @@ We will be working out of two primary branches within dev
 
 ```git
 groundStation
-```
-
-```git
 rover
 ```
