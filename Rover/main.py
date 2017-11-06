@@ -1,7 +1,7 @@
 
 # Enable GPIO 
 import RPi.GPIO as GPIO
-# Set GPIO using BCM number
+# Set GPIO to use BCM numbering
 GPIO.setmode(GPIO.BCM)
 
 
