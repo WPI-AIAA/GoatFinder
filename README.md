@@ -127,10 +127,3 @@ port = serial.Serial("/dev/ttyAMA0", baudrate=115200, timeout=3.0) # ttyAMA0 cor
 port.write("Sometext")
 port.read(10) # Read 10 Characters
 ```
-
-### XBEE
-
-XBEE Radio Protocol Options
-+ Ad Hoc Wireless Network Mode
-+ Serial Communication Service
-+ API Mode
