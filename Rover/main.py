@@ -1,16 +1,14 @@
 
-# Enable GPIO 
-import RPi.GPIO as GPIO
-# Set GPIO to use BCM numbering
-GPIO.setmode(GPIO.BCM)
+from enum import Enum
+
+class State(Enum):
+	TEST = 1
+	STANDBY = 2
+	ARM = 3
+
+# Initialization
+# Run setup and tests
 
 
-# Enable SMBUS for I2C
 
-
-#Code
-
-
-# Clean-up
-GPIO.cleanup()
-
+# Go Into Operation Mode
