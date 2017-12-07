@@ -6,18 +6,18 @@
 
 ## Adding the Repository
 Clone the repository to a directory
-```
+```bash
 $~ git clone https://github.com/WPI-AIAA-BOR/GoatFinder
 $~ git checkout dev
 ```
 
 From here move into a specific branch
-```
+```bash
 $~ git checkout <branch>
 ```
 
 We will be working out of two primary branches within dev
-```
+```bash
 groundStation
 rover
 ```
@@ -57,19 +57,6 @@ Taken from [Adafruit](https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4
 5. Check for attached I2C devices
    `sudo i2cdetect -y 1`
 
-### Enable SPI
-
-Taken from [Adafruit](https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-spi)
-
-1. ​Remove the blacklist for the SPI module
-   `sudo nano /etc/modprobe.d/rapsi-blacklist.conf`
-
-2. Reboot
-   `sudo reboot`
-
-3. Check the devices are available
-   `ls -l /dev/spidev*`
-
 ### Enable UART
 
 1. Install Serial Library
@@ -105,9 +92,10 @@ GPIO.setmode(GPIO.BCM)
 ### Using I2C
 
 I2C will be used to interface with the BMP280 and LSM9DS0
+We will be using I2C bus #0
 ```python
 import smbus
-myDevice = smbus.SMBus(1) # The Pi has two available busses, 0 and 1
+myDevice = smbus.SMBus(0) # The Pi has two available busses, 0 and 1
 myAddress = 0x00 # Device address
 
 def read(byte):
@@ -127,3 +115,8 @@ port = serial.Serial("/dev/ttyAMA0", baudrate=115200, timeout=3.0) # ttyAMA0 cor
 port.write("Sometext")
 port.read(10) # Read 10 Characters
 ```
+
+### Using Pi Camera
+
+[Official GitHub](https://github.com/waveform80/picamera)
+[Official Documentation](https://picamera.readthedocs.io/en/release-1.13/)
