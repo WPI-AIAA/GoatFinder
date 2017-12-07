@@ -120,3 +120,5 @@ port.read(10) # Read 10 Characters
 
 [Official GitHub](https://github.com/waveform80/picamera)
 [Official Documentation](https://picamera.readthedocs.io/en/release-1.13/)
+
+
