@@ -7,7 +7,7 @@
 ## Adding the Repository
 Clone the repository to a directory
 ```
-$~ git clone https://github.com/WPI-AIAA-BOR/GoatFinder
+$~ git clone https://github.com/WPI-AIAA/GoatFinder
 $~ git checkout dev
 ```
 
