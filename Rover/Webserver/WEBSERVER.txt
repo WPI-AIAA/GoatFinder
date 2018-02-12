@@ -1,0 +1,10 @@
+The apache webserver was installed on the pi using sudo apt-get install apache2 -y.
+
+The sample file that was created can be viewed by going into your browser and putting in 
+					
+					http://130.215.10.40
+
+The IP address can also be found by using the command "hostname -I" on the Pi. 
+
+On the Pi, this file can be found at /var/www/html/. 
+The file index.html needs to be modified in order to be able to store the pictures.
