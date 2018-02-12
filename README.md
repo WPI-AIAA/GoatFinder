@@ -7,7 +7,8 @@
 ## Adding the Repository
 Clone the repository to a directory
 ```bash
-$~ git clone https://github.com/WPI-AIAA-BOR/GoatFinder
+```
+$~ git clone https://github.com/WPI-AIAA/GoatFinder
 $~ git checkout dev
 ```
 
@@ -122,3 +123,10 @@ port.read(10) # Read 10 Characters
 [Official Documentation](https://picamera.readthedocs.io/en/release-1.13/)
 
 
+<<<<<<< HEAD
+=======
+XBEE Radio Protocol Options
++ Ad Hoc Wireless Network Mode
++ Serial Communication Service
++ API Mode
+>>>>>>> master
