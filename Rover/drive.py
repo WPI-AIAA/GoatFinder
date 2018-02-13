@@ -7,6 +7,7 @@ direction = 0.0
 
 deltadir = [0.0,0.0]
 
+
 def turn(motorspeed):
     global direction
     turnamt = (motorspeed[0] - motorspeed[1])/5
@@ -36,7 +37,7 @@ def drive(tgtlocation, location):
     while not iscloseenough(tgtlocation, location, 0.01): #we should determine what the correct 
         #tgtlocation and location are arrays with x and y-distances
         dircontroller = PID(1,1,1,.5)
-        speedcontroller = PID(1,0,1,.5)
+        speedcontroller = PID(10,0,1,.5)
         
         direction = compass()
         delta = wheeltravel()
@@ -56,26 +57,39 @@ def drive(tgtlocation, location):
                     speed = 0.01
 
         tgtspeed = speedcontroller.update(distance) #optimal speed for rover to travel at
-        tgtdirection = dircontroller.update(direction - compass()) #amount for rover to turn CW
+
+        turnerror = direction - compass()
+
+        if turnerror > math.pi:
+            turnerror = 2*math.pi - turnerror
+        if turnerror < -math.pi:
+            turnerror = turnerror + 2*math.pi
+        
+        tgtdirection = dircontroller.update(turnerror) #amount for rover to turn CW
 
         if tgtspeed > 1:
-                        tgtspeed = 1
+                        tgtspeed = 1.0
 
         motorspeed = [tgtspeed+tgtdirection,tgtspeed-tgtdirection]
         if motorspeed[0] > motorspeed[1]:
-            motorspeed = [1,motorspeed[1]/motorspeed[0]]
+            motorspeed = [1.0,motorspeed[1]/motorspeed[0]]
         else:
-            motorspeed = [motorspeed[0]/motorspeed[1],1]
+            motorspeed = [motorspeed[0]/motorspeed[1],1.0]
         motorspeed = [motorspeed[0]*tgtspeed, motorspeed[1]*tgtspeed]
         #TODO: write values to motor
-        if __name__ == '__main__':
+
+        motorspeed[1] = motorspeed[1]*1.0
+
+        if __name__ == '__main__': #this is for debug purposes
+            
             print("---")
             print(motorspeed[0])
             print(motorspeed[1])
+            print(direction)
             turn(motorspeed)
             updatewheel(motorspeed)
             plt.scatter(location[0],location[1])
-            plt.pause(0.05)
+            plt.pause(0.01)
 
 if __name__ == '__main__':
     drive([-1,1],[0,0])
