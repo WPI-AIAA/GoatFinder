@@ -15,7 +15,7 @@ class PID:
         self.I = (self.IFactor*self.I)+(self.Ci*(1-self.IFactor)*error*self.delta)
         self.D = (self.Cd*(error-self.oldError)/self.delta) #Only one previous sample taken. Will perform badly in response to large disturbances.
         self.oldError = error
-        return P+I+D
+        return self.P+self.I+self.D
     def reset(self): #Resets terms to 0, to reduce issues due to changing the target point
         self.I = 0
         self.oldError = 0

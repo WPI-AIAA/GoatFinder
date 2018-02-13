@@ -6,7 +6,7 @@ def addToQueue(call):
     q.put(call)
 
 def mainQueue():
-    while  not q.empty():
+    while not q.empty():
         call = q.get()
         function = call[0]
         args = call[1:]
