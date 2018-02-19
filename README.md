@@ -22,7 +22,8 @@ groundStation
 rover
 ```
 
-
+## SSH for PI
+ssh pi@BOR-pi.dyn.wpi.edu, password bor2018
 
 ## Setting up the PI Zero W
 
