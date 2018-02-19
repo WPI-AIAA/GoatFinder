@@ -23,7 +23,7 @@ rover
 ```
 
 ## SSH for PI
-ssh pi@BOR-pi.dyn.wpi.edu, password: see group me
+ssh pi@BOR-pi.dyn.wpi.edu, password: see GroupMe
 
 ## Setting up the PI Zero W
 
