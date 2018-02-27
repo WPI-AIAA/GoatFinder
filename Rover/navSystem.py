@@ -13,9 +13,9 @@ class navsystem(object)
         # preallocate arrays
         dx = np.zeros((1,xy_frames_stored), dtype = np.float32)
         dy = np.zeros((1,xy_frames_stored), dtype = np.float32)
-        theta = np.zeros((1,xy_frames_stored), dtype = np.float32)
+        #theta = np.zeros((1,xy_frames_stored), dtype = np.float32) # unneeded
         accel = np.zeros((3,sensor_frames_stored,), dtype = np.float32)
-        gyro = np.zeros((3,sensor_frames_stored,), dtype = np.float32)
+        heading = np.zeros((3,sensor_frames_stored,), dtype = np.float32)
         mag = np.zeros((3,sensor_frames_stored,), dtype = np.float32)
         encoder = np.zeros((2,encoder_frames_stored,), dtype = np.float32)
         r = np.zeros((1,xy_frames_stored), dtype = int)
@@ -27,9 +27,9 @@ class navsystem(object)
         v_old = 0 # last measured velocity from 
 
     def new_9dof(self,full_9dof):
-        gyro(sensor_i) = full_9dof(0)
-        mag(sensor_i) = full_9dof(1)
-        accel(sensor_i) = full_9dof(2)
+        gyro[sensor_i] = full_9dof[0]
+        heading[sensor_i] = np.arctan(np.true_divide(full_9dof[1][0],full_9dof[1][1])) - zero_angle
+        accel[sensor_i] = full_9dof[2]
         sensor_i = (sensor_i + 1) % sensor_frames_stored
 
     #deprecated  for shit encoders
@@ -42,15 +42,11 @@ class navsystem(object)
 
     def read_displacement(self):
         xy_i = (xy_i + 1) % xy_frames_stored
-        r(xy_i) = encoder_cnt(0) * encoder_distance # just use one wheel for efficiency. change this to an average of both wheels if things are weird
-        theta(xy_i) = # TODO
-        theta_avg = (theta(xy_i) + theta(xy_i-1))/2
-        dx(xy_i) = np.cos(theta_avg)*r
-        dy(xy_i) = np.sin(theta_avg)*r
-        if self.confirm_distance()
-            return dx(xy_i),dy(xy_i),theta(xy_i)
-        else
-            # TODO confirm with Nathan
+        r[xy_i] = encoder_cnt[0] * encoder_distance # just use one wheel for efficiency. change this to an average of both wheels if things are weird
+        heading_avg = (heading[sensor_i] + heading[sensor_i-1])/2
+        dx[xy_i] = np.cos[heading_avg]*r
+        dy[xy_i] = np.sin[heading_avg]*r
+        return dx[xy_i],dy[xy_i],heading[sensor_i], self.confirm_distance()
 
     def confirm_distance(self):
         return 1 # for now
