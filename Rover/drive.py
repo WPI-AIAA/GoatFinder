@@ -54,10 +54,12 @@ def iscloseenough(tgtlocation, location, margin):
     return False
     
 def drive(tgtlocation, location):
+
+    dircontroller = PID(1.5,1,2.5,.5)
+    speedcontroller = PID(1,0,0,.5)
+    
     while not iscloseenough(tgtlocation, location, 0.05): #we should determine what the correct 
-        #tgtlocation and location are arrays with x and y-distances
-        dircontroller = PID(1.5,1,1.5,.5)
-        speedcontroller = PID(1,0,0,.5)
+        #tgtlocation and location are [y,x] arrays
         
         direction = compass()
         delta = wheeltravel()
@@ -110,10 +112,10 @@ def drive(tgtlocation, location):
             turn(motorspeed)
             updatewheel(motorspeed)
             plt.scatter(location[0],location[1])
-            #plt.pause(0.01)
+            plt.pause(0.01)
 
 if __name__ == '__main__':
     drive([-2,2],[0,0])
     drive([-2,-2],[-2,2])
     drive([.5,0],[-2,-2])
-    plt.show()
+    #plt.show()
