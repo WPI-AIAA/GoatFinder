@@ -1,5 +1,6 @@
 import math
 from PIDcontrol import PID
+import motorOutput as mot
 import matplotlib.pyplot as plt
 
 
@@ -57,6 +58,7 @@ def drive(tgtlocation, location):
 
     dircontroller = PID(1.5,1,2.5,.5)
     speedcontroller = PID(1,0,0,.5)
+    mot.startmotors()
     
     while not iscloseenough(tgtlocation, location, 0.05): #we should determine what the correct 
         #tgtlocation and location are [y,x] arrays
@@ -100,6 +102,9 @@ def drive(tgtlocation, location):
         motorspeed = [motorspeed[0]*tgtspeed, motorspeed[1]*tgtspeed]
         #TODO: write values to motor
 
+        mot.driveleftmotor(motorspeed[0])
+        mot.driverightmotor(motorspeed[1])
+
         motorspeed[1] = motorspeed[1]*1.0
 
         if __name__ == '__main__': #this is for debug purposes
@@ -113,6 +118,8 @@ def drive(tgtlocation, location):
             updatewheel(motorspeed)
             plt.scatter(location[0],location[1])
             plt.pause(0.01)
+            
+    mot.stopmotors()
 
 if __name__ == '__main__':
     drive([-2,2],[0,0])

@@ -12,14 +12,14 @@ __genericMotor__ = ("A","B","PWM")
 '''
 
 import RPi.GPIO as GPIO
-
+GPIO.setmode(GPIO.BCM)
 usingPCB = True
 
 if usingPCB:
     __leftMotor__ = ("A","B","PWM")
     __rightMotor__ = ("A","B","PWM")
     __marker1Servo__ = ("PWM")
-    __marker1Servo__ = ("PWM")
+    __marker2Servo__ = ("PWM")
     __parachuteServo__ = ("PWM")
 
     #do other things
@@ -27,5 +27,5 @@ else:
     __leftMotor__ = ("A","B","PWM")
     __rightMotor__ = ("A","B","PWM")
     __marker1Servo__ = ("PWM")
-    __marker1Servo__ = ("PWM")
+    __marker2Servo__ = ("PWM")
     __parachuteServo__ = ("PWM")
