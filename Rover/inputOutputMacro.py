@@ -12,7 +12,7 @@ __genericMotor__ = ("A","B","PWM")
 '''
 
 import RPi.GPIO as GPIO
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BOARD)
 usingPCB = True
 
 if usingPCB:
