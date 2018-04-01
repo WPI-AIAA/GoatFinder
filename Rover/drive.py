@@ -1,22 +1,10 @@
 import math
 from PIDcontrol import PID
-import matplotlib.pyplot as plt
-
+import motorOutput as mot
 
 direction = 0.0
 
 deltadir = [0.0,0.0]
-
-
-def turn(motorspeed):
-    global direction
-    turnamt = (motorspeed[0] - motorspeed[1])/5
-    direction += turnamt
-
-def updatewheel(motorspeed):
-    global deltadir
-    deltadir[0] = motorspeed[0]/10
-    deltadir[1] = motorspeed[1]/10
 
 #drive program, uses PID controller and function inputs
 def compass():
@@ -34,10 +22,13 @@ def iscloseenough(tgtlocation, location, margin):
     return False
     
 def drive(tgtlocation, location):
-    while not iscloseenough(tgtlocation, location, 0.01): #we should determine what the correct 
-        #tgtlocation and location are arrays with x and y-distances
-        dircontroller = PID(1,1,1,.5)
-        speedcontroller = PID(10,0,1,.5)
+
+    dircontroller = PID(1.5,1,2.5,.5)
+    speedcontroller = PID(1,0,0,.5)
+    mot.startmotors()
+    
+    while not iscloseenough(tgtlocation, location, 0.05): #we should determine what the correct 
+        #tgtlocation and location are [y,x] arrays
         
         direction = compass()
         delta = wheeltravel()
@@ -76,22 +67,14 @@ def drive(tgtlocation, location):
         else:
             motorspeed = [motorspeed[0]/motorspeed[1],1.0]
         motorspeed = [motorspeed[0]*tgtspeed, motorspeed[1]*tgtspeed]
-        #TODO: write values to motor
 
-        motorspeed[1] = motorspeed[1]*1.0
+        mot.driveleftmotor(motorspeed[0])
+        mot.driverightmotor(motorspeed[1])
 
-        if __name__ == '__main__': #this is for debug purposes
-            
-            print("---")
-            print(motorspeed[0])
-            print(motorspeed[1])
-            print(direction)
-            turn(motorspeed)
-            updatewheel(motorspeed)
-            plt.scatter(location[0],location[1])
-            plt.pause(0.01)
+    mot.stopmotors()
 
 if __name__ == '__main__':
-    drive([-1,1],[0,0])
-    drive([-1,-1],[-1,1])
-    drive([.5,0],[-1,-1])
+    drive([-2,2],[0,0])
+    drive([-2,-2],[-2,2])
+    drive([.5,0],[-2,-2])
+    #plt.show()
