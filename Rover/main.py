@@ -1,5 +1,7 @@
 
 from enum import Enum
+import threading
+from thread_objects import *
 
 class State(Enum):
 	TEST = 1
@@ -9,9 +11,13 @@ class State(Enum):
 # Initialization
 # Run setup and tests
 
+hall_reader = threading.Thread(target = hall_thread, daemon = True)
+nine_dof_reader = threading.Thread(target = nine_dof_thread, daemon = True)
 
 
 # Go Into Operation Mode
+hall_reader.run()
+nine_dof_reader.run()
 
 
 #Nathan's really old stuff (w/ two example functions)
@@ -24,13 +30,12 @@ def doAThing(arg1, arg2):
 def doAnotherThing(arg1):
     print(arg1)
 
-if __name__ == '__main__':
-    #testing PID
-    #controller = PID(1,1,1,.5)
+#testing PID
+#controller = PID(1,1,1,.5)
 
-    #you can add functions to the queue
-    addToQueue((doAThing, "ASDASDJSAFKJHASFKHE", "asdfs"))
-    addToQueue((doAnotherThing, 3+4))
+#you can add functions to the queue
+addToQueue((doAThing, "ASDASDJSAFKJHASFKHE", "asdfs"))
+addToQueue((doAnotherThing, 3+4))
 
-    #you can run the queue, it'll run
-    mainQueue()
+#you can run the queue, it'll run
+mainQueue()
