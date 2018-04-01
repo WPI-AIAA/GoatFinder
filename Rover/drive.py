@@ -1,43 +1,10 @@
 import math
 from PIDcontrol import PID
 import motorOutput as mot
-import matplotlib.pyplot as plt
-
 
 direction = 0.0
 
 deltadir = [0.0,0.0]
-
-oldmotorspeed = [0.0,0.0]
-oldturnamt = 0.0
-
-inertia = 0.9
-
-
-def turn(motorspeed):
-    global direction
-    
-    global oldturnamt
-    global inertia
-    
-    turnamt = (motorspeed[0] - motorspeed[1])/5
-    turnamt = turnamt*(1-inertia) + oldturnamt*inertia
-    oldturnamt = turnamt
-    direction += turnamt
-
-def updatewheel(motorspeed):
-    global deltadir
-
-    global oldmotorspeed
-    global inertia
-    
-    motorspeed[0] = motorspeed[0]*(1-inertia) + oldmotorspeed[0]*inertia
-    motorspeed[1] = motorspeed[1]*(1-inertia) + oldmotorspeed[1]*inertia
-    oldmotorspeed[0] = motorspeed[0]
-    oldmotorspeed[1] = motorspeed[1]
-    
-    deltadir[0] = motorspeed[0]/10
-    deltadir[1] = motorspeed[1]/10
 
 #drive program, uses PID controller and function inputs
 def compass():
@@ -100,25 +67,10 @@ def drive(tgtlocation, location):
         else:
             motorspeed = [motorspeed[0]/motorspeed[1],1.0]
         motorspeed = [motorspeed[0]*tgtspeed, motorspeed[1]*tgtspeed]
-        #TODO: write values to motor
 
         mot.driveleftmotor(motorspeed[0])
         mot.driverightmotor(motorspeed[1])
 
-        motorspeed[1] = motorspeed[1]*1.0
-
-        if __name__ == '__main__': #this is for debug purposes
-
-            #print("---")
-            #print(motorspeed[0])
-            #print(motorspeed[1])
-            #print(direction)
-            
-            turn(motorspeed)
-            updatewheel(motorspeed)
-            plt.scatter(location[0],location[1])
-            plt.pause(0.01)
-            
     mot.stopmotors()
 
 if __name__ == '__main__':
