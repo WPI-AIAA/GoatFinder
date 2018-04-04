@@ -3,17 +3,6 @@ from PIDcontrol import PID
 import motorOutput as mot
 from navSystem_hall import navsystem
 
-direction = 0.0
-
-deltadir = [0.0,0.0]
-
-#drive program, uses PID controller and function inputs
-def compass():
-    #placeholder. determines direction the rover is facing (CW, 0 at y-up)
-    return direction
-def wheeltravel():
-    #placeholder. determines distance the rover has traveled since the last update
-    return deltadir
 
 def iscloseenough(tgtlocation, location, margin):
     dispx = tgtlocation[0] - location[0]
@@ -34,17 +23,18 @@ def drive(tgtlocation, location):
         #direction = compass()
         #delta = wheeltravel()
         # TODO FIX THIS SHIT NATHAN
+        # TODONE I THINK
         dx, dy, direction, skid = nav.read_displacement()
         
-        speed = math.sqrt(math.pow(delta[0],2)+math.pow(delta[1],2))
-        delta = [math.cos(direction)*(delta[0]+delta[1])/2,math.sin(direction)*(delta[0]+delta[1])/2]
+        speed = math.sqrt(math.pow(dx,2)+math.pow(dy,2))
+        #delta = [math.cos(direction)*(delta[0]+delta[1])/2,math.sin(direction)*(delta[0]+delta[1])/2]
 
-        location[0] += delta[0]
-        location[1] += delta[1]
+        location[0] += dy
+        location[1] += dx
 
         distanceleft = [tgtlocation[0]-location[0],tgtlocation[1]-location[1]]
 
-        direction = math.atan2(distanceleft[1], distanceleft[0])
+        tgtdirection = math.atan2(distanceleft[1], distanceleft[0])
         distance = math.sqrt(math.pow(distanceleft[0],2)+math.pow(distanceleft[1],2))
 
         if speed == 0:
@@ -52,7 +42,7 @@ def drive(tgtlocation, location):
 
         tgtspeed = speedcontroller.update(distance) #optimal speed for rover to travel at
 
-        turnerror = direction - compass()
+        turnerror = tgtdirection - direction
 
         if turnerror > math.pi:
             turnerror = 2*math.pi - turnerror
