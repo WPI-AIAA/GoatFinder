@@ -9,7 +9,7 @@ class navsystem(object):
             encoder_distance, # distance of one encoder tick
             skid_err_range, # how much faster the wheels can be than the accelerometers would estimate without the system reporting slippage, as a percentage of accelerometer readings
             accel_time_step, # time between acclerometer readings, required as a factor for the reimann sum to calculate velocity
-            gyro_pitch_axis # the axis (0,1, or 2) that corresponds to pitch - depends on orientation of mounting TODO figure this out
+            gyro_pitch_axis # should be Y or 1 for PCB version
             ):
 
         zero_angle = zero_angle # offset for theta = 0
@@ -62,44 +62,20 @@ class navsystem(object):
         d = (v_old + v)/2*t*dt
 
         # transform by angles - heading and pitch
-        pitch = gyro[gyro_pitch_axis, sensor_i]
+        pitch = gyro[gyro_pitch_axis,sensor_i]
+        heading_old = heading;
         heading = np.arctan(np.true_divide(mag[0,sensor_i],mag[1,sensor_i])) - zero_angle
-        d = # TODO - figure out x-y-z
+        #d = # TODO - figure out x-y-z
+        heading_curr = (heading-heading_old)/2
+        dx = d*np.cos(heading_curr)*np.cos(pitch)
+        dy = d*np.sin(heading_curr)*np.cos(pitch)
+
 
         # increment index
         #xy_i = (xy_i + 1) % xy_frames_stored
 
         return dx[xy_i],dy[xy_i],heading[sensor_i], self.confirm_distance()
 
-    def read_displacement(self):
-
-        #create list of new acceleration readings and number of time steps
-        if (sensor_i > sensor_last_i): # if array has not looped around
-            new_accels = accel[:, sensor_last_i+1:sensor_i]
-            t = sensor_i - sensor_last_i
-
-        else # if array has looped around
-            new_accels = vstack(              # concatenate...
-                    accel[:, sensor_last_i:], # last to end and ...
-                    accel[:, :sensor_i])      # begininning to current
-            t = sensor_frames_stored + sensor_i - sensor_last_i
-
-        # calculate list of velocities
-        new_vs = new_accels[:-1] + new_accels[1:] / 2
-
-        # calculate list of ds
-        # d = v*dt
-        new_ds = new_vs * dt
-
-        # transform by angles - heading and pitch
-        pitch = gyro[gyro_pitch_axis, sensor_i]
-        heading = np.arctan(np.true_divide(mag[0,sensor_i],mag[1,sensor_i])) - zero_angle
-        d = # TODO - figure out x-y-z
-
-        # increment index
-        #xy_i = (xy_i + 1) % xy_frames_stored
-
-        return dx[xy_i],dy[xy_i],heading[sensor_i], self.confirm_distance()
 
     def confirm_distance(self):
         return 1 # for now
