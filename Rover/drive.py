@@ -1,6 +1,7 @@
 import math
 from PIDcontrol import PID
 import motorOutput as mot
+from navSystem_hall import navsystem
 
 direction = 0.0
 
@@ -30,8 +31,10 @@ def drive(tgtlocation, location):
     while not iscloseenough(tgtlocation, location, 0.05): #we should determine what the correct 
         #tgtlocation and location are [y,x] arrays
         
-        direction = compass()
-        delta = wheeltravel()
+        #direction = compass()
+        #delta = wheeltravel()
+        # TODO FIX THIS SHIT NATHAN
+        dx, dy, direction, skid = nav.read_displacement()
         
         speed = math.sqrt(math.pow(delta[0],2)+math.pow(delta[1],2))
         delta = [math.cos(direction)*(delta[0]+delta[1])/2,math.sin(direction)*(delta[0]+delta[1])/2]
