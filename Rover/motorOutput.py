@@ -2,7 +2,7 @@
 
 import inputOutputMacro as iom
 import RPI.GPIO as GPIO
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BCM)
 
 GPIO.setup(iom.__leftMotor__[0], GPIO.OUT)
 GPIO.setup(iom.__leftMotor__[1], GPIO.OUT)
