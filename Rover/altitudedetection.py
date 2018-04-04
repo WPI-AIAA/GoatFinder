@@ -1,4 +1,5 @@
 import time
+import BMP085
 
 initialalt = 0
 
@@ -9,7 +10,9 @@ deltat = 1
 
 def getalt():
     #preferably in meters
-    return 0
+    sensor = BMP085()
+
+    return sensor.read_altitude()
 
 
 def initializealt():
@@ -20,7 +23,7 @@ def initializealt():
 
     #records initial altitude
     initialalt = getpressure()
-        
+
 def isstationary():
     global deltat
     global altmargin
@@ -49,7 +52,7 @@ def ismovingup():
             count += 1
         if alt > initialalt + 150:
             count = statmargin
-    
+
 def ismovingdown():
     global deltat
     global altmargin
