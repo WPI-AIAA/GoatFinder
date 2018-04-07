@@ -47,7 +47,7 @@ class navsystem(object):
             new_accels = accel[:, sensor_last_i+1:sensor_i]
             t = sensor_i - sensor_last_i
 
-        else # if array has looped around
+        else: # if array has looped around
             new_accels = vstack(              # concatenate...
                     accel[:, sensor_last_i:], # last to end and ...
                     accel[:, :sensor_i])      # begininning to current

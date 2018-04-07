@@ -1,8 +1,11 @@
 import LSM9DS0
-class hall_thread:j
+import time
+class hall_thread:
     pass
 
-class ninedof_thread:
+class ninedof_thread(t):
     global nav
-    nav.new_9dof((LSM9DS0.readGyro(),LSM9DS0.readMag(),LSM9DS0.readAccel()))
-    pass
+    def __init__():
+        while True:
+            nav.new_9dof((LSM9DS0.readGyro(),LSM9DS0.readMag(),LSM9DS0.readAccel()))
+            time.sleep(t)
