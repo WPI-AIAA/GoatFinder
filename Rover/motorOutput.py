@@ -21,6 +21,10 @@ def startmotors():
 def stopmotors():
     leftmotorPWM.stop()
     rightmotorPWM.stop()
+    GPIO.output(iom.__leftMotor__[0], False)
+    GPIO.output(iom.__leftMotor__[1], False)
+    GPIO.output(iom.__rightMotor__[0], False)
+    GPIO.output(iom.__rightMotor__[1], False)
 
 def driveleftmotor(velocity):
     if velocity > 1.0:
@@ -28,7 +32,7 @@ def driveleftmotor(velocity):
     if velocity < -1.0:
         velocity = -1.0
 
-    if velocity > 0:
+    if velocity >= 0:
         GPIO.output(iom.__leftMotor__[0], True)
         GPIO.output(iom.__leftMotor__[1], False)
         leftmotorPWM.ChangeDutyCycle(100*velocity)
@@ -43,7 +47,7 @@ def driverightmotor(velocity):
     if velocity < -1.0:
         velocity = -1.0
 
-    if velocity > 0:
+    if velocity >= 0:
         GPIO.output(iom.__rightMotor__[0], True)
         GPIO.output(iom.__rightMotor__[1], False)
         rightmotorPWM.ChangeDutyCycle(100*velocity)
