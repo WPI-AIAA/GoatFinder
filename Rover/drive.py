@@ -13,8 +13,8 @@ def iscloseenough(tgtlocation, location, margin):
     
 def drive(tgtlocation, location):
 
-    dircontroller = PID(1.5,1,2.5,.5)
-    speedcontroller = PID(1,0,0,.5)
+    dircontroller = PID(1.5,1,2.5)
+    speedcontroller = PID(1,0,0)
     mot.startmotors()
     
     while not iscloseenough(tgtlocation, location, 0.05): #we should determine what the correct 
