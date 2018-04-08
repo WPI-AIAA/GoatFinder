@@ -1,7 +1,12 @@
 # PCB
 + gpio 11 - Ain1
-+ gpio7 - Ain2
-+ gpio9 - Bin1
++ gpio 7  - Ain2
++ gpio 9  - Bin1
 
 # perfboard
-+ 
++ gpio 14 - PWMA
++ gpio 15 - Ain2
++ gpio 23 - Ain1
++ gpio 24 - Bin1
++ gpio 25 - Bin2
++ gpio 8  - PWMB
