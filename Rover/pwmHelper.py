@@ -66,3 +66,18 @@ def set_dropper3(pulse):
 #    time.sleep(1)
 #    pwm.set_pwm(0, 0, servo_max)
 #    time.sleep(1)
+
+if __name__ == '__main__':
+    while True:
+        for i in range(0, 100):
+            set_dropper1(i)
+            time.sleep(.5)
+        for i in range(0, 100):
+            set_dropper1(100-i)
+            time.sleep(.5)
+        
+
+
+
+
+

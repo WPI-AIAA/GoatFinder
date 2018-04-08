@@ -64,3 +64,15 @@ def driverightmotor(velocity):
         #rightmotorPWM.ChangeDutyCycle(-100*velocity)
         pwmH.set_rightmotor(-100*velocity)
         
+
+if __name__ == '__main__':
+    while True:
+        for i in range(0,1,0.1):
+            driveleftmotor(i)
+            sleep(1)
+        for i in range(0,2,0.1):
+            driveleftmotor(1-i)
+            sleep(1)
+        for i in range(0,1,0.1):
+            driveleftmotor(i-1)
+            sleep(1)
