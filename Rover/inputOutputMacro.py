@@ -13,7 +13,7 @@ __genericMotor__ = ("A","B","PWM")
 
 #import RPi.GPIO as GPIO
 #GPIO.setmode(GPIO.BCM)
-usingPCB = False
+usingPCB = True
 
 if usingPCB:
     __leftMotor__ = (11,7,14)
