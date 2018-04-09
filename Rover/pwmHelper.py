@@ -17,7 +17,7 @@ import Adafruit_PCA9685
 #pwm = Adafruit_PCA9685.PCA9685()
 
 # Alternatively specify a different address and/or bus:
-pwm = Adafruit_PCA9685.PCA9685(address=0x47, busnum=1)
+pwm = Adafruit_PCA9685.PCA9685(address=0x70, busnum=1)
 
 # Configure min and max servo pulse lengths
 servo_min = 150  # Min pulse length out of 4096
