@@ -8,11 +8,13 @@ GPIO.setmode(GPIO.BCM)
 
 GPIO.setup(iom.__leftMotor__[0], GPIO.OUT)
 GPIO.setup(iom.__leftMotor__[1], GPIO.OUT)
+GPIO.setup(iom.__leftMotor__[2], GPIO.OUT)
 leftmotorPWM = GPIO.PWM(iom.__leftMotor__[2], 100)
 leftmotorPWM.start(0)
 
 GPIO.setup(iom.__rightMotor__[0], GPIO.OUT)
 GPIO.setup(iom.__rightMotor__[1], GPIO.OUT)
+GPIO.setup(iom.__rightMotor__[2], GPIO.OUT)
 rightmotorPWM = GPIO.PWM(iom.__rightMotor__[2], 100)
 rightmotorPWM.start(0)
 
