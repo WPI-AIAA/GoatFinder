@@ -15,7 +15,7 @@ GPIO.setup(iom.__rightMotor__[1], GPIO.OUT)
 #rightmotorPWM = GPIO.PWM(iom.__rightMotor__[2], 100)
 #rightmotorPWM.start(0)
 
-def startmotors():
+#def startmotors():
     #leftmotorPWM.start(0)
     #rightmotorPWM.start(0)
 
