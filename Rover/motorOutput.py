@@ -67,12 +67,12 @@ def driverightmotor(velocity):
 
 if __name__ == '__main__':
     while True:
-        for i in range(0,1,0.1):
-            driveleftmotor(i)
+        for i in range(0,100):
+            driveleftmotor(i/100)
             sleep(1)
-        for i in range(0,2,0.1):
-            driveleftmotor(1-i)
+        for i in range(0,200):
+            driveleftmotor((100-i)/100)
             sleep(1)
-        for i in range(0,1,0.1):
-            driveleftmotor(i-1)
+        for i in range(0,100):
+            driveleftmotor((i-100)/100)
             sleep(1)
