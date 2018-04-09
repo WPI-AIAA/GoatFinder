@@ -44,7 +44,7 @@ pwm.set_pwm_freq(60)
 #0-100 because that's what the RPi GPIO library uses
 def set_leftmotor(pulse):
     pulse = (pulse*(motor_max-motor_min)/100)+motor_min
-    pwm.set_pwm(0,0,600)#int(pulse))
+    pwm.set_pwm(0,0,int(pulse))
 def set_rightmotor(pulse):
     pulse = (pulse*(motor_max-motor_min)/100)+motor_min
     pwm.set_pwm(1,0,int(pulse))
