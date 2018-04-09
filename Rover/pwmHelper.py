@@ -14,10 +14,10 @@ import Adafruit_PCA9685
 #logging.basicConfig(level=logging.DEBUG)
 
 # Initialise the PCA9685 using the default address (0x40).
-pwm = Adafruit_PCA9685.PCA9685()
+#pwm = Adafruit_PCA9685.PCA9685()
 
 # Alternatively specify a different address and/or bus:
-#pwm = Adafruit_PCA9685.PCA9685(address=0x41, busnum=2)
+pwm = Adafruit_PCA9685.PCA9685(address=0x70, busnum=1)
 
 # Configure min and max servo pulse lengths
 servo_min = 150  # Min pulse length out of 4096
@@ -43,20 +43,20 @@ pwm.set_pwm_freq(60)
 
 #0-100 because that's what the RPi GPIO library uses
 def set_leftmotor(pulse):
-    pulse = (pulse*(motor_min-motor_max)/100)+motor_min
-    pwm.set_pwm(0,0,pulse)
+    pulse = (pulse*(motor_max-motor_min)/100)+motor_min
+    pwm.set_pwm(0,0,int(pulse))
 def set_rightmotor(pulse):
-    pulse = (pulse*(motor_min-motor_max)/100)+motor_min
-    pwm.set_pwm(1,0,pulse)
+    pulse = (pulse*(motor_max-motor_min)/100)+motor_min
+    pwm.set_pwm(1,0,int(pulse))
 def set_dropper1(pulse):
-    pulse = (pulse*(servo_min-servo_max)/100)+servo_min
-    pwm.set_pwm(2,0,pulse)
+    pulse = (pulse*(servo_max-servo_min)/100)+servo_min
+    pwm.set_pwm(2,0,int(pulse))
 def set_dropper2(pulse):
-    pulse = (pulse*(servo_min-servo_max)/100)+servo_min
-    pwm.set_pwm(3,0,pulse)
+    pulse = (pulse*(servo_max-servo_min)/100)+servo_min
+    pwm.set_pwm(3,0,int(pulse))
 def set_dropper3(pulse):
-    pulse = (pulse*(servo_min-servo_max)/100)+servo_min
-    pwm.set_pwm(4,0,pulse)
+    pulse = (pulse*(servo_max-servo_min)/100)+servo_min
+    pwm.set_pwm(4,0,int(pulse))
 
 
 #print('Moving servo on channel 0, press Ctrl-C to quit...')

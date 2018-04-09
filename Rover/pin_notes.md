@@ -2,6 +2,7 @@
 + gpio 11 - Ain1
 + gpio 7  - Ain2
 + gpio 9  - Bin1
++ gpio 10 - Bin2
 
 # perfboard
 + gpio 14 - PWMA

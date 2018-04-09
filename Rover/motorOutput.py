@@ -2,20 +2,23 @@
 
 import inputOutputMacro as iom
 import pwmHelper as pwmH
-import RPI.GPIO as GPIO
+import RPi.GPIO as GPIO
+import time
 GPIO.setmode(GPIO.BCM)
 
 GPIO.setup(iom.__leftMotor__[0], GPIO.OUT)
 GPIO.setup(iom.__leftMotor__[1], GPIO.OUT)
+#GPIO.setup(iom.__leftMotor__[2], GPIO.OUT)
 #leftmotorPWM = GPIO.PWM(iom.__leftMotor__[2], 100)
 #leftmotorPWM.start(0)
 
 GPIO.setup(iom.__rightMotor__[0], GPIO.OUT)
 GPIO.setup(iom.__rightMotor__[1], GPIO.OUT)
+#GPIO.setup(iom.__rightMotor__[2], GPIO.OUT)
 #rightmotorPWM = GPIO.PWM(iom.__rightMotor__[2], 100)
 #rightmotorPWM.start(0)
 
-def startmotors():
+#def startmotors():
     #leftmotorPWM.start(0)
     #rightmotorPWM.start(0)
 
@@ -67,12 +70,13 @@ def driverightmotor(velocity):
 
 if __name__ == '__main__':
     while True:
-        for i in range(0,1,0.1):
-            driveleftmotor(i)
-            sleep(1)
-        for i in range(0,2,0.1):
-            driveleftmotor(1-i)
-            sleep(1)
-        for i in range(0,1,0.1):
-            driveleftmotor(i-1)
-            sleep(1)
+        for i in range(-100,100):
+            driveleftmotor(i/100)
+            driverightmotor(i/100)
+            time.sleep(.5)
+        #for i in range(0,200):
+        #    driveleftmotor((100-i)/100)
+        #    time.sleep(.5)
+        #for i in range(0,100):
+        #    driveleftmotor((i-100)/100)
+        #    time.sleep(.5)
