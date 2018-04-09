@@ -44,19 +44,19 @@ pwm.set_pwm_freq(60)
 #0-100 because that's what the RPi GPIO library uses
 def set_leftmotor(pulse):
     pulse = (pulse*(motor_min-motor_max)/100)+motor_min
-    pwm.set_pwm(0,0,pulse)
+    pwm.set_pwm(0,0,int(pulse))
 def set_rightmotor(pulse):
     pulse = (pulse*(motor_min-motor_max)/100)+motor_min
-    pwm.set_pwm(1,0,pulse)
+    pwm.set_pwm(1,0,int(pulse))
 def set_dropper1(pulse):
     pulse = (pulse*(servo_min-servo_max)/100)+servo_min
-    pwm.set_pwm(2,0,pulse)
+    pwm.set_pwm(2,0,int(pulse))
 def set_dropper2(pulse):
     pulse = (pulse*(servo_min-servo_max)/100)+servo_min
-    pwm.set_pwm(3,0,pulse)
+    pwm.set_pwm(3,0,int(pulse))
 def set_dropper3(pulse):
     pulse = (pulse*(servo_min-servo_max)/100)+servo_min
-    pwm.set_pwm(4,0,pulse)
+    pwm.set_pwm(4,0,int(pulse))
 
 
 #print('Moving servo on channel 0, press Ctrl-C to quit...')
