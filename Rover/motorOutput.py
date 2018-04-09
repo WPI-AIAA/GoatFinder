@@ -3,6 +3,7 @@
 import inputOutputMacro as iom
 import pwmHelper as pwmH
 import RPi.GPIO as GPIO
+import time
 GPIO.setmode(GPIO.BCM)
 
 GPIO.setup(iom.__leftMotor__[0], GPIO.OUT)
@@ -69,10 +70,10 @@ if __name__ == '__main__':
     while True:
         for i in range(0,100):
             driveleftmotor(i/100)
-            sleep(1)
+            time.sleep(1)
         for i in range(0,200):
             driveleftmotor((100-i)/100)
-            sleep(1)
+            time.sleep(1)
         for i in range(0,100):
             driveleftmotor((i-100)/100)
-            sleep(1)
+            time.sleep(1)
