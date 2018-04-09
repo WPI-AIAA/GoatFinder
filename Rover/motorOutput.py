@@ -1,7 +1,7 @@
 #sue me
 
 import inputOutputMacro as iom
-import pwmHelper as pwmH
+#import pwmHelper as pwmH
 import RPi.GPIO as GPIO
 import time
 GPIO.setmode(GPIO.BCM)
