@@ -2,7 +2,7 @@
 
 import inputOutputMacro as iom
 import pwmHelper as pwmH
-import RPI.GPIO as GPIO
+import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 
 GPIO.setup(iom.__leftMotor__[0], GPIO.OUT)
