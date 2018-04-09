@@ -11,8 +11,8 @@ __genericServo__ = ("PWM")
 __genericMotor__ = ("A","B","PWM")
 '''
 
-import RPi.GPIO as GPIO
-GPIO.setmode(GPIO.BCM)
+#import RPi.GPIO as GPIO
+#GPIO.setmode(GPIO.BCM)
 usingPCB = True
 
 if usingPCB:
