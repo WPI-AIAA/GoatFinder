@@ -3,7 +3,7 @@ import time
 class hall_thread:
     pass
 
-class ninedof_thread(t):
+class ninedof_thread(t=0.05):
     global nav
     def __init__():
         while True:
