@@ -32,41 +32,41 @@ class navsystem(object):
         dt = 0.1 # TODO fill this - 
 
     def new_9dof(self,full_9dof):
-        gyro[:,sensor_i] = full_9dof[0][:]
-        mag[:,sensor_i] = full_9d0f[1][:]
-        accel[sensor_i] = full_9dof[2][:]
-        sensor_i = (sensor_i + 1) % sensor_frames_stored
+        self.gyro[:,sensor_i] = full_9dof[0][:]
+        self.mag[:,sensor_i] = full_9d0f[1][:]
+        self.accel[sensor_i] = full_9dof[2][:]
+        sself.ensor_i = (self.sensor_i + 1) % self.sensor_frames_stored
 
     def new_encoder(self,n): # n specifies left or right
-        encoder_cnt[n] += 1
+        self.encoder_cnt[n] += 1
 
     def read_displacement(self):
 
         #create list of new acceleration readings and number of time steps
-        if (sensor_i > sensor_last_i): # if array has not looped around
-            new_accels = accel[:, sensor_last_i+1:sensor_i]
-            t = sensor_i - sensor_last_i
+        if (self.sensor_i > self.sensor_last_i): # if array has not looped around
+            new_accels = self.accel[:, self.sensor_last_i+1:self.sensor_i]
+            t = self.sensor_i - self.sensor_last_i
 
         else: # if array has looped around
             new_accels = vstack(              # concatenate...
-                    accel[:, sensor_last_i:], # last to end and ...
-                    accel[:, :sensor_i])      # begininning to current
-            t = sensor_frames_stored + sensor_i - sensor_last_i
+                    self.accel[:, self.sensor_last_i:], # last to end and ...
+                    .accel[:, :sensor_i])      # begininning to current
+            t = self.sensor_frames_stored + self.sensor_i - self.sensor_last_i
 
         # calculate next velocity:
         # v2 = v1 + a1*t1+a2*t2+...
-        v = v_old + np.sum(new_accels, axis = 2)*accel_time_step # sum along each dimension
+        v = v_old + np.sum(self.new_accels, axis = 2)*self.accel_time_step # sum along each dimension
 
         # calculate next 
         # d = v_avg*dt
         d = (v_old + v)/2*t*dt
 
         # transform by angles - heading and pitch
-        pitch = gyro[gyro_pitch_axis,sensor_i]
-        heading_old = heading;
-        heading = np.arctan(np.true_divide(mag[0,sensor_i],mag[1,sensor_i])) - zero_angle
+        pitch = self.gyro[self.gyro_pitch_axis,self.sensor_i]
+        heading_old = self.heading;
+        heading = np.arctan(np.true_divide(mag[0,self.sensor_i],mag[1,self.sensor_i])) - self.zero_angle
         #d = # TODO - figure out x-y-z
-        heading_curr = (heading-heading_old)/2
+        heading_curr = (self.heading-self.heading_old)/2
         dx = d*np.cos(heading_curr)*np.cos(pitch)
         dy = d*np.sin(heading_curr)*np.cos(pitch)
 
@@ -74,7 +74,7 @@ class navsystem(object):
         # increment index
         #xy_i = (xy_i + 1) % xy_frames_stored
 
-        return dx[xy_i],dy[xy_i],heading[sensor_i], self.confirm_distance()
+        return dx[xy_i],dy[xy_i],self.heading[sensor_i], self.confirm_distance()
 
 
     def confirm_distance(self):
