@@ -15,7 +15,8 @@ def drive(tgtlocation, location):
 
     dircontroller = PID(1.5,1,2.5)
     speedcontroller = PID(1,0,0)
-    mot.startmotors()
+    #mot.startmotors()
+    global nav
     
     while not iscloseenough(tgtlocation, location, 0.05): #we should determine what the correct 
         #tgtlocation and location are [y,x] arrays
@@ -64,7 +65,7 @@ def drive(tgtlocation, location):
         mot.driveleftmotor(motorspeed[0])
         mot.driverightmotor(motorspeed[1])
 
-    mot.stopmotors()
+    #mot.stopmotors()
 
 if __name__ == '__main__':
     drive([-2,2],[0,0])
