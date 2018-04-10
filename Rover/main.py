@@ -36,19 +36,14 @@ nine_dof_reader.run()
 #Nathan's really old stuff (w/ two example functions)
 from PIDcontrol import PID
 from functionQueue import *
-
-def doAThing(arg1, arg2):
-    print(arg1)
-    print(arg2)
-def doAnotherThing(arg1):
-    print(arg1)
+import drive as dr
 
 #testing PID
 #controller = PID(1,1,1,.5)
 
 #you can add functions to the queue
-addToQueue((doAThing, "ASDASDJSAFKJHASFKHE", "asdfs"))
-addToQueue((doAnotherThing, 3+4))
+addToQueue((dr.drive, [1,1],[0,0]))
+addToQueue((dr.drive, [0,0],[1,1]))
 
 #you can run the queue, it'll run
 mainQueue()
