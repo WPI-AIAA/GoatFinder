@@ -22,7 +22,7 @@ class navsystem(object):
         #theta = np.zeros((1,xy_frames_stored), dtype = np.float32) # unneeded
         self.accel = np.zeros((3,sensor_frames_stored,), dtype = np.float32)
         self.gyro = np.zeros((3,sensor_frames_stored,), dtype = np.float32)
-        self.heading = np.zeros((1,sensor_frames_stored,), dtype = np.float32) # abstracted from gyro
+        self.heading = 0
         self.mag = np.zeros((3,sensor_frames_stored,), dtype = np.float32)
         self.encoder = np.zeros((2,encoder_frames_stored,), dtype = np.float32)
         self.encoder_cnt = np.zeros(2, dtype = int)
@@ -70,6 +70,8 @@ class navsystem(object):
         self.heading = np.arctan(np.true_divide(self.mag[0,self.sensor_i],self.mag[1,self.sensor_i])) - self.zero_angle
         #d = # TODO - figure out x-y-z
         heading_curr = (self.heading-heading_old)/2
+        #print(heading_curr)
+        #print(pitch)
         dx = -d[0]*np.cos(heading_curr)*np.cos(pitch)
         dy = -d[0]*np.sin(heading_curr)*np.cos(pitch)
 
