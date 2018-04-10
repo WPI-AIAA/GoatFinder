@@ -12,30 +12,33 @@ class navsystem(object):
             gyro_pitch_axis # should be Y or 1 for PCB version
             ):
 
-        zero_angle = zero_angle # offset for theta = 0
+        self.gyro_pitch_axis = gyro_pitch_axis
+        self.accel_time_step = accel_time_step
+        self.sensor_frames_stored = sensor_frames_stored
+        self.zero_angle = zero_angle # offset for theta = 0
         # preallocate arrays
         #dx = np.zeros((1,xy_frames_stored), dtype = np.float32)
         #dy = np.zeros((1,xy_frames_stored), dtype = np.float32)
         #theta = np.zeros((1,xy_frames_stored), dtype = np.float32) # unneeded
-        accel = np.zeros((3,sensor_frames_stored,), dtype = np.float32)
-        gyro = np.zeros((3,sensor_frames_stored,), dtype = np.float32)
-        heading = np.zeros((1,sensor_frames_stored,), dtype = np.float32) # abstracted from gyro
-        mag = np.zeros((3,sensor_frames_stored,), dtype = np.float32)
-        encoder = np.zeros((2,encoder_frames_stored,), dtype = np.float32)
-        encoder_cnt = np.zeros(2, dtype = int)
+        self.accel = np.zeros((3,sensor_frames_stored,), dtype = np.float32)
+        self.gyro = np.zeros((3,sensor_frames_stored,), dtype = np.float32)
+        self.heading = np.zeros((1,sensor_frames_stored,), dtype = np.float32) # abstracted from gyro
+        self.mag = np.zeros((3,sensor_frames_stored,), dtype = np.float32)
+        self.encoder = np.zeros((2,encoder_frames_stored,), dtype = np.float32)
+        self.encoder_cnt = np.zeros(2, dtype = int)
         #r = np.zeros((1,xy_frames_stored), dtype = int)
         #xy_i = 0 # index into x/y/theta
-        sensor_i = 0 # index into 9DOF arrays
-        sensor_last_i = 0 # last index already read
-        encoder_i = 0 # index into past encoders
-        v_old = 0 # last measured velocity 
-        dt = 0.1 # TODO fill this - 
+        self.sensor_i = 0 # index into 9DOF arrays
+        self.sensor_last_i = 0 # last index already read
+        self.encoder_i = 0 # index into past encoders
+        self.v_old = 0 # last measured velocity 
+        self.dt = 0.1 # TODO fill this - 
 
     def new_9dof(self,full_9dof):
-        self.gyro[:,sensor_i] = full_9dof[0][:]
-        self.mag[:,sensor_i] = full_9d0f[1][:]
-        self.accel[sensor_i] = full_9dof[2][:]
-        sself.ensor_i = (self.sensor_i + 1) % self.sensor_frames_stored
+        self.gyro[:,self.sensor_i] = full_9dof[0][:]
+        self.mag[:,self.sensor_i] = full_9dof[1][:]
+        self.accel[:,self.sensor_i] = full_9dof[2][:]
+        self.sensor_i = (self.sensor_i + 1) % self.sensor_frames_stored
 
     def new_encoder(self,n): # n specifies left or right
         self.encoder_cnt[n] += 1
@@ -48,33 +51,33 @@ class navsystem(object):
             t = self.sensor_i - self.sensor_last_i
 
         else: # if array has looped around
-            new_accels = vstack(              # concatenate...
+            new_accels = np.hstack((              # concatenate...
                     self.accel[:, self.sensor_last_i:], # last to end and ...
-                    .accel[:, :sensor_i])      # begininning to current
+                    self.accel[:, :self.sensor_i]))      # begininning to current
             t = self.sensor_frames_stored + self.sensor_i - self.sensor_last_i
 
         # calculate next velocity:
         # v2 = v1 + a1*t1+a2*t2+...
-        v = v_old + np.sum(self.new_accels, axis = 2)*self.accel_time_step # sum along each dimension
+        v = self.v_old + np.sum(new_accels, axis = 1)*self.accel_time_step # sum along each dimension
 
         # calculate next 
         # d = v_avg*dt
-        d = (v_old + v)/2*t*dt
+        d = (self.v_old + v)/2*t*self.dt
 
         # transform by angles - heading and pitch
         pitch = self.gyro[self.gyro_pitch_axis,self.sensor_i]
         heading_old = self.heading;
-        heading = np.arctan(np.true_divide(mag[0,self.sensor_i],mag[1,self.sensor_i])) - self.zero_angle
+        self.heading = np.arctan(np.true_divide(self.mag[0,self.sensor_i],self.mag[1,self.sensor_i])) - self.zero_angle
         #d = # TODO - figure out x-y-z
-        heading_curr = (self.heading-self.heading_old)/2
-        dx = d*np.cos(heading_curr)*np.cos(pitch)
-        dy = d*np.sin(heading_curr)*np.cos(pitch)
+        heading_curr = (self.heading-heading_old)/2
+        dx = -d[0]*np.cos(heading_curr)*np.cos(pitch)
+        dy = -d[0]*np.sin(heading_curr)*np.cos(pitch)
 
 
         # increment index
         #xy_i = (xy_i + 1) % xy_frames_stored
 
-        return dx[xy_i],dy[xy_i],self.heading[sensor_i], self.confirm_distance()
+        return dx,dy,self.heading, self.confirm_distance()
 
 
     def confirm_distance(self):

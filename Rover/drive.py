@@ -25,6 +25,8 @@ def drive(tgtlocation, location):
         # TODO FIX THIS SHIT NATHAN
         # TODONE I THINK
         dx, dy, direction, skid = nav.read_displacement()
+        print(dx)
+        print(dy)
         
         speed = math.sqrt(math.pow(dx,2)+math.pow(dy,2))
         #delta = [math.cos(direction)*(delta[0]+delta[1])/2,math.sin(direction)*(delta[0]+delta[1])/2]

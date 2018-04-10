@@ -7,9 +7,9 @@ class hall_thread:
 
 class nine_dof_thread():
     #global nav
-    def __init__(t=0.05):
+    def __init__(self,t=0.05):
+        lsm = LSM9DS0()
         while True:
-            lsm = LSM9DS0()
 
             nav.new_9dof((lsm.readGyro(),lsm.readMag(),lsm.readAccel()))
-            time.sleep(t)
+            time.sleep(1)
