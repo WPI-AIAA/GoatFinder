@@ -16,16 +16,16 @@ __genericMotor__ = ("A","B","PWM")
 usingPCB = True
 
 if usingPCB:
-    __leftMotor__ = (11,7,14)
-    __rightMotor__ = (9,10,8)
+    __leftMotor__ = (9,10,8)
+    __rightMotor__ = (11,7,14)
     __marker1Servo__ = ("PWM")
     __marker2Servo__ = ("PWM")
     __parachuteServo__ = ("PWM")
 
     #do other things
 else:
-    __leftMotor__ = (23,15,14)
-    __rightMotor__ = (24,12,8)
+    __leftMotor__ = (24,12,8)
+    __rightMotor__ = (23,15,14)
     __marker1Servo__ = ("PWM")
     __marker2Servo__ = ("PWM")
     __parachuteServo__ = ("PWM")
