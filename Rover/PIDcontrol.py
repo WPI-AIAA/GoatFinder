@@ -13,8 +13,8 @@ class PID:
         self.D = 0
         self.oldError = 0
     def update(self, error): #Call this for one cycle of the controller
-        delta = time.time() - oldtime
-        oldtime = time.time()
+        delta = time.time() - self.oldtime
+        self.oldtime = time.time()
         self.P = (self.Cp*error)
         self.I = (self.IFactor*self.I)+(self.Ci*(1-self.IFactor)*error*delta)
         self.D = (self.Cd*(error-self.oldError)/delta) #Only one previous sample taken. Will perform badly in response to large disturbances.

@@ -1,7 +1,7 @@
 import math
 from PIDcontrol import PID
 import motorOutput as mot
-from nav_loader import nav
+import nav_loader 
 
 def iscloseenough(tgtlocation, location, margin):
     dispx = tgtlocation[0] - location[0]
@@ -9,13 +9,13 @@ def iscloseenough(tgtlocation, location, margin):
     if dispx < margin and -dispx < margin and dispy < margin and -dispy < margin:
         return True
     return False
+#global nav
     
 def drive(tgtlocation, location):
 
     dircontroller = PID(1.5,1,2.5)
     speedcontroller = PID(1,0,0)
     #mot.startmotors()
-    #global nav
     
     while not iscloseenough(tgtlocation, location, 0.05): #we should determine what the correct 
         #tgtlocation and location are [y,x] arrays
@@ -24,7 +24,8 @@ def drive(tgtlocation, location):
         #delta = wheeltravel()
         # TODO FIX THIS SHIT NATHAN
         # TODONE I THINK
-        dx, dy, direction, skid = nav.read_displacement()
+        print(nav_loader.nav)
+        dx, dy, direction, skid = nav_loader.nav.read_displacement()
         print(dx)
         print(dy)
         

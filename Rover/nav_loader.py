@@ -1,5 +1,5 @@
 from navSystem_hall import navsystem
-
+global nav
 nav = navsystem(
         xy_frames_stored = 5,
         sensor_frames_stored = 20,
@@ -10,3 +10,4 @@ nav = navsystem(
         accel_time_step = .05,# TODO set before running
         gyro_pitch_axis = 1, # Y/1 for PCB
         )
+print(nav)
