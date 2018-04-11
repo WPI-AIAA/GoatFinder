@@ -4,6 +4,7 @@ import multiprocessing
 from thread_objects import *
 import nav_loader 
 from time import sleep
+import drive as dr
 #from navSystem_hall import navsystem
 
 class State(Enum):
@@ -17,7 +18,8 @@ class State(Enum):
 hall_reader = multiprocessing.Process(target = hall_thread, daemon = True)
 nine_dof_reader = multiprocessing.Process(target = nine_dof_thread, daemon = True)
 
-#global nav
+global nav_loader
+nav_loader.init()
 
 
 # Go Into Operation Mode
@@ -28,7 +30,6 @@ nine_dof_reader.start()
 #Nathan's really old stuff (w/ two example functions)
 from PIDcontrol import PID
 from functionQueue import *
-import drive as dr
 
 #testing PID
 #controller = PID(1,1,1,.5)
@@ -38,7 +39,8 @@ addToQueue((dr.drive, [1,1],[0,0]))
 addToQueue((dr.drive, [0,0],[1,1]))
 
 print("about to start queue")
-sleep(10) # get some accelerometer data to avoid NaNs
+sleep(1) # get some accelerometer data to avoid NaNs
+print(nav_loader.nav)
 print(nav_loader.nav.accel)
 
 #you can run the queue, it'll run

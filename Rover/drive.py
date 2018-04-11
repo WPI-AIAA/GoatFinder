@@ -24,10 +24,15 @@ def drive(tgtlocation, location):
         #delta = wheeltravel()
         # TODO FIX THIS SHIT NATHAN
         # TODONE I THINK
-        print(nav_loader.nav)
-        dx, dy, direction, skid = nav_loader.nav.read_displacement()
-        print(dx)
-        print(dy)
+        global nav_loader
+        #print(nav_loader.nav)
+        dx = nav_loader.x
+        dy = nav_loader.y
+        heading = nav_loader.heading
+        nav_loader.x = 0
+        nav_loader.y = 0
+        #print(dx)
+        #print(dy)
         
         speed = math.sqrt(math.pow(dx,2)+math.pow(dy,2))
         #delta = [math.cos(direction)*(delta[0]+delta[1])/2,math.sin(direction)*(delta[0]+delta[1])/2]
@@ -45,7 +50,7 @@ def drive(tgtlocation, location):
 
         tgtspeed = speedcontroller.update(distance) #optimal speed for rover to travel at
 
-        turnerror = tgtdirection - direction
+        turnerror = tgtdirection - heading
 
         if turnerror > math.pi:
             turnerror = 2*math.pi - turnerror
