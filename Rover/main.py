@@ -1,6 +1,6 @@
 
 from enum import Enum
-import multiprocessing
+import threading
 from thread_objects import *
 import nav_loader 
 from time import sleep
@@ -15,8 +15,8 @@ class State(Enum):
 # Initialization
 # Run setup and tests
 
-hall_reader = multiprocessing.Process(target = hall_thread, daemon = True)
-nine_dof_reader = multiprocessing.Process(target = nine_dof_thread, daemon = True)
+hall_reader = threading.Thread(target = hall_thread, daemon = True)
+nine_dof_reader = threading.Thread(target = nine_dof_thread, daemon = True)
 
 global nav_loader
 nav_loader.init()
@@ -39,9 +39,7 @@ addToQueue((dr.drive, [1,1],[0,0]))
 addToQueue((dr.drive, [0,0],[1,1]))
 
 print("about to start queue")
-sleep(1) # get some accelerometer data to avoid NaNs
-print(nav_loader.nav)
-print(nav_loader.nav.accel)
+sleep(5) # get some accelerometer data to avoid NaNs
 
 #you can run the queue, it'll run
 mainQueue()

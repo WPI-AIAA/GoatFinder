@@ -2,6 +2,7 @@ import math
 from PIDcontrol import PID
 import motorOutput as mot
 import nav_loader 
+import time
 
 def iscloseenough(tgtlocation, location, margin):
     dispx = tgtlocation[0] - location[0]
@@ -18,6 +19,7 @@ def drive(tgtlocation, location):
     #mot.startmotors()
     
     while not iscloseenough(tgtlocation, location, 0.05): #we should determine what the correct 
+        time.sleep(.1)
         #tgtlocation and location are [y,x] arrays
         
         #direction = compass()
@@ -29,6 +31,10 @@ def drive(tgtlocation, location):
         dx = nav_loader.x
         dy = nav_loader.y
         heading = nav_loader.heading
+        print("heading:")
+        print(heading)
+        print("x/y")
+        print((dx,dy))
         nav_loader.x = 0
         nav_loader.y = 0
         #print(dx)
@@ -69,6 +75,8 @@ def drive(tgtlocation, location):
             motorspeed = [motorspeed[0]/motorspeed[1],1.0]
         motorspeed = [motorspeed[0]*tgtspeed, motorspeed[1]*tgtspeed]
 
+        print("Motor speeds:")
+        print(motorspeed)
         mot.driveleftmotor(motorspeed[0])
         mot.driverightmotor(motorspeed[1])
 
