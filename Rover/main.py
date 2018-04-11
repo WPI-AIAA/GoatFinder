@@ -35,8 +35,8 @@ from functionQueue import *
 #controller = PID(1,1,1,.5)
 
 #you can add functions to the queue
-addToQueue((dr.drive, [1,1],[0,0]))
-addToQueue((dr.drive, [0,0],[1,1]))
+addToQueue((dr.drive, [120,0],[0,0]))
+addToQueue((dr.drive, [120,120],[120,0]))
 
 print("about to start queue")
 sleep(5) # get some accelerometer data to avoid NaNs

@@ -11,6 +11,36 @@ def iscloseenough(tgtlocation, location, margin):
         return True
     return False
 #global nav
+
+def turn(tgtheading):
+
+    dircontroller = PID(1.5,1,2.5)
+
+    heading = nav_loader.heading
+
+    while not (tgtheading - heading) < .017:
+        time.sleep(.1)
+
+        heading = nav_loader.heading
+
+        error = tgtheading - heading
+
+        if error > math.pi:
+            error = 2*math.pi - error
+        if error < -math.pi:
+            error = error + 2*math.pi
+
+        wheel = dircontroller.update(error)
+
+        if wheel > 1:
+            wheel = 1.0
+
+        mot.driveleftmotor(wheel)
+        mot.driverightmotor(-wheel)
+    mot.stopmotors()
+    time.sleep(0.5)
+    #set accelerometer to 0 velocity
+        
     
 def drive(tgtlocation, location):
 
@@ -80,7 +110,9 @@ def drive(tgtlocation, location):
         mot.driveleftmotor(motorspeed[0])
         mot.driverightmotor(motorspeed[1])
 
-    #mot.stopmotors()
+    mot.stopmotors()
+    time.sleep(0.5)
+    #set accelerometer to 0 velocity
 
 if __name__ == '__main__':
     drive([-2,2],[0,0])
