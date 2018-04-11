@@ -48,7 +48,7 @@ def drive(tgtlocation, location):
     speedcontroller = PID(1,0,0)
     #mot.startmotors()
     
-    while not iscloseenough(tgtlocation, location, 0.05): #we should determine what the correct 
+    while not iscloseenough(tgtlocation, location, 0.5): #we should determine what the correct 
         time.sleep(.1)
         #tgtlocation and location are [y,x] arrays
         
