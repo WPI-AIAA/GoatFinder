@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 class navsystem(object):
     
@@ -12,6 +13,7 @@ class navsystem(object):
             gyro_pitch_axis # should be Y or 1 for PCB version
             ):
 
+        self.time = time.time()
         self.gyro_pitch_axis = gyro_pitch_axis
         self.accel_time_step = accel_time_step
         self.sensor_frames_stored = sensor_frames_stored
@@ -32,7 +34,7 @@ class navsystem(object):
         self.sensor_last_i = 0 # last index already read
         self.encoder_i = 0 # index into past encoders
         self.v_old = 0 # last measured velocity 
-        self.dt = 0.1 # TODO fill this - 
+        #self.dt = 0.1 # 
 
     def new_9dof(self,full_9dof):
         self.gyro[:,self.sensor_i] = full_9dof[0][:]
@@ -44,25 +46,31 @@ class navsystem(object):
         self.encoder_cnt[n] += 1
 
     def read_displacement(self):
+        #calculate time since last read_displacement()
+        time_old = self.time
+        self.time = time.time()
+        t = self.time-time_old
+        
+        
 
         #create list of new acceleration readings and number of time steps
         if (self.sensor_i > self.sensor_last_i): # if array has not looped around
             new_accels = self.accel[:, self.sensor_last_i+1:self.sensor_i]
-            t = self.sensor_i - self.sensor_last_i
+            n = self.sensor_i - self.sensor_last_i
 
         else: # if array has looped around
             new_accels = np.hstack((              # concatenate...
                     self.accel[:, self.sensor_last_i:], # last to end and ...
                     self.accel[:, :self.sensor_i]))      # begininning to current
-            t = self.sensor_frames_stored + self.sensor_i - self.sensor_last_i
+            n = self.sensor_frames_stored + self.sensor_i - self.sensor_last_i
 
         # calculate next velocity:
         # v2 = v1 + a1*t1+a2*t2+...
-        v = self.v_old + np.sum(new_accels, axis = 1)*self.accel_time_step # sum along each dimension
+        v = self.v_old + np.sum(new_accels, axis = 1)*np.truedivide(t,n) # sum along each dimension
 
         # calculate next 
         # d = v_avg*dt
-        d = (self.v_old + v)/2*t*self.dt
+        d = (self.v_old + v)/2*t
 
         # transform by angles - heading and pitch
         pitch = self.gyro[self.gyro_pitch_axis,self.sensor_i]
