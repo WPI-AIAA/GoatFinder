@@ -15,13 +15,16 @@ def iscloseenough(tgtlocation, location, margin):
 def turn(tgtheading):
 
     dircontroller = PID(1.5,1,2.5)
+    global nav_loader
 
-    heading = nav_loader.heading
+    #heading = nav_loader.heading
+    _,_,heading = nav_loader.nav.read_displacement()
 
     while not (tgtheading - heading) < .017:
         time.sleep(.1)
 
-        heading = nav_loader.heading
+        #heading = nav_loader.heading
+        _,_,heading = nav_loader.nav.read_displacement()
 
         error = tgtheading - heading
 
@@ -58,17 +61,18 @@ def drive(tgtlocation, location):
         # TODONE I THINK
         global nav_loader
         #print(nav_loader.nav)
-        dx = nav_loader.x
-        dy = nav_loader.y
-        heading = nav_loader.heading
-        print("heading:")
-        print(heading)
-        print("x/y")
-        print((dx,dy))
-        nav_loader.x = 0
-        nav_loader.y = 0
+        #dx = nav_loader.x
+        #dy = nav_loader.y
+        #heading = nav_loader.heading
+        #print("heading:")
+        #print(heading)
+        #print("x/y")
+        #print((dx,dy))
+        #nav_loader.x = 0
+        #nav_loader.y = 0
         #print(dx)
         #print(dy)
+        dx, dy, heading = nav_loader.nav.read_displacement()
         
         speed = math.sqrt(math.pow(dx,2)+math.pow(dy,2))
         #delta = [math.cos(direction)*(delta[0]+delta[1])/2,math.sin(direction)*(delta[0]+delta[1])/2]

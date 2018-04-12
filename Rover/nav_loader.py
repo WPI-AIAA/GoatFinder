@@ -1,12 +1,12 @@
 from navSystem_hall import navsystem
-global x
-global y
-global heading
-global skid
-x=0
-y=0
-heading=0
-skid = 0
+#global x
+#global y
+#global heading
+#global skid
+#x=0
+#y=0
+#heading=0
+#skid = 0
 def init():
     global nav
     nav = navsystem(
