@@ -18,13 +18,13 @@ def turn(tgtheading):
     global nav_loader
 
     #heading = nav_loader.heading
-    _,_,heading = nav_loader.nav.read_displacement()
+    _,_,heading,_ = nav_loader.nav.read_displacement()
 
     while not (tgtheading - heading) < .017:
         time.sleep(.1)
 
         #heading = nav_loader.heading
-        _,_,heading = nav_loader.nav.read_displacement()
+        _,_,heading,_ = nav_loader.nav.read_displacement()
 
         error = tgtheading - heading
 
@@ -72,7 +72,7 @@ def drive(tgtlocation, location):
         #nav_loader.y = 0
         #print(dx)
         #print(dy)
-        dx, dy, heading = nav_loader.nav.read_displacement()
+        dx, dy, heading,_ = nav_loader.nav.read_displacement()
         
         speed = math.sqrt(math.pow(dx,2)+math.pow(dy,2))
         #delta = [math.cos(direction)*(delta[0]+delta[1])/2,math.sin(direction)*(delta[0]+delta[1])/2]
