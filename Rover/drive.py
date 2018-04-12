@@ -99,8 +99,15 @@ def drive(tgtlocation, location):
         
         tgtdirection = dircontroller.update(turnerror) #amount for rover to turn CW
 
+        if tgtdirection > 1:
+            tgtdirection = 1.0
+        elif tgtdirection < -1:
+            tgtdirection = -1.0
+
         if tgtspeed > 1:
-                        tgtspeed = 1.0
+            tgtspeed = 1.0
+        elif tgtspeed < 0.3:
+            tgtspeed = 0.3
 
         motorspeed = [tgtspeed+tgtdirection,tgtspeed-tgtdirection]
         if motorspeed[0] > motorspeed[1]:
