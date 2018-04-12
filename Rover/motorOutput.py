@@ -39,16 +39,16 @@ def driverightmotor(velocity):
         velocity = -1.0
 
     if velocity >= 0:
-        GPIO.output(iom.__rightMotor__[0], False)
-        GPIO.output(iom.__rightMotor__[1], True)
-        #leftmotorPWM.ChangeDutyCycle(100*velocity)
-        pwmH.set_leftmotor(100*velocity)
-        
-    else:
         GPIO.output(iom.__rightMotor__[0], True)
         GPIO.output(iom.__rightMotor__[1], False)
+        #leftmotorPWM.ChangeDutyCycle(100*velocity)
+        pwmH.set_rightmotor(100*velocity)
+        
+    else:
+        GPIO.output(iom.__rightMotor__[0], False)
+        GPIO.output(iom.__rightMotor__[1], True)
         #leftmotorPWM.ChangeDutyCycle(-100*velocity)
-        pwmH.set_leftmotor(-100*velocity)
+        pwmH.set_rightmotor(-100*velocity)
         
 def driveleftmotor(velocity):
     if velocity > 1.0:
@@ -57,15 +57,15 @@ def driveleftmotor(velocity):
         velocity = -1.0
 
     if velocity >= 0:
-        GPIO.output(iom.__leftMotor__[0], False)
-        GPIO.output(iom.__leftMotor__[1], True)
-        #rightmotorPWM.ChangeDutyCycle(100*velocity)
-        pwmH.set_rightmotor(100*velocity)
-    else:
         GPIO.output(iom.__leftMotor__[0], True)
         GPIO.output(iom.__leftMotor__[1], False)
+        #rightmotorPWM.ChangeDutyCycle(100*velocity)
+        pwmH.set_leftmotor(100*velocity)
+    else:
+        GPIO.output(iom.__leftMotor__[0], False)
+        GPIO.output(iom.__leftMotor__[1], True)
         #rightmotorPWM.ChangeDutyCycle(-100*velocity)
-        pwmH.set_rightmotor(-100*velocity)
+        pwmH.set_leftmotor(-100*velocity)
         
 
 if __name__ == '__main__':

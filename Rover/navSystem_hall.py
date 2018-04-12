@@ -75,7 +75,7 @@ class navsystem(object):
         # transform by angles - heading and pitch
         pitch = self.gyro[self.gyro_pitch_axis,self.sensor_i]
         heading_old = self.heading;
-        self.heading = np.arctan2(self.mag[0,self.sensor_i],self.mag[1,self.sensor_i]) - self.zero_angle
+        self.heading = np.arctan2(self.mag[1,self.sensor_i],self.mag[0,self.sensor_i]) - self.zero_angle
         #d = # TODO - figure out x-y-z
         heading_curr = (self.heading-heading_old)/2
         #print(heading_curr)

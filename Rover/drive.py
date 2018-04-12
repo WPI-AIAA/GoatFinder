@@ -14,7 +14,7 @@ def iscloseenough(tgtlocation, location, margin):
 
 def turn(tgtheading):
 
-    dircontroller = PID(1.5,1,2.5)
+    dircontroller = PID(1,0,0)
     global nav_loader
 
     #heading = nav_loader.heading
@@ -47,7 +47,7 @@ def turn(tgtheading):
     
 def drive(tgtlocation, location):
 
-    dircontroller = PID(1.5,1,2.5)
+    dircontroller = PID(1,0,0)
     speedcontroller = PID(1,0,0)
     #mot.startmotors()
     
@@ -73,6 +73,7 @@ def drive(tgtlocation, location):
         #print(dx)
         #print(dy)
         dx, dy, heading,_ = nav_loader.nav.read_displacement()
+
         
         speed = math.sqrt(math.pow(dx,2)+math.pow(dy,2))
         #delta = [math.cos(direction)*(delta[0]+delta[1])/2,math.sin(direction)*(delta[0]+delta[1])/2]
@@ -90,7 +91,17 @@ def drive(tgtlocation, location):
 
         tgtspeed = speedcontroller.update(distance) #optimal speed for rover to travel at
 
-        turnerror = tgtdirection - heading
+        if tgtdirection > math.pi:
+            tgtdirection = 2*math.pi - tgtdirection
+        elif tgtdirection < -math.pi:
+            tgtdirection = tgtdirection + 2*math.pi
+
+        turnerror = tgtdirection -+ heading
+
+        print("turn error:")
+        print(turnerror)
+        print("heading:")
+        print(heading)
 
         if turnerror > math.pi:
             turnerror = 2*math.pi - turnerror

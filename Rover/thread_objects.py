@@ -30,5 +30,5 @@ def nine_dof_thread(t=0.01):
 
         #print(nav_loader.nav)
         #print(nav_loader.nav.accel)
-        time.sleep(.01)
+        time.sleep(.05)
 

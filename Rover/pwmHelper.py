@@ -23,8 +23,8 @@ pwm = Adafruit_PCA9685.PCA9685(address=0x70, busnum=1)
 servo_min = 150  # Min pulse length out of 4096
 servo_max = 600  # Max pulse length out of 4096
 
-motor_min = 0
-motor_max = 4096
+motor_min = 100
+motor_max = 3996
 
 # Helper function to make setting a servo pulse width simpler.
 def set_servo_pulse(channel, pulse):
@@ -46,10 +46,10 @@ def set_leftmotor(pulse):
     pulse = (pulse*(motor_max-motor_min)/100)+motor_min
     print("pulse width of left motor:")
     print(pulse)
-    pwm.set_pwm(0,0,int(pulse))
+    pwm.set_pwm(1,0,int(pulse))
 def set_rightmotor(pulse):
     pulse = (pulse*(motor_max-motor_min)/100)+motor_min
-    pwm.set_pwm(1,0,int(pulse))
+    pwm.set_pwm(0,0,int(pulse))
 def set_dropper1(pulse):
     pulse = (pulse*(servo_max-servo_min)/100)+servo_min
     pwm.set_pwm(2,0,int(pulse))
