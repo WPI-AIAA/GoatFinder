@@ -66,7 +66,7 @@ class navsystem(object):
 
         # calculate next velocity:
         # v2 = v1 + a1*t1+a2*t2+...
-        v = self.v_old + np.sum(new_accels, axis = 1)*np.truedivide(t,n) # sum along each dimension
+        v = self.v_old + np.sum(new_accels, axis = 1)*np.true_divide(t,n) # sum along each dimension
 
         # calculate next 
         # d = v_avg*dt
