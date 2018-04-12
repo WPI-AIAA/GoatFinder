@@ -6,7 +6,7 @@ from math import isnan
 class hall_thread:
     pass
 
-def nine_dof_thread(t=0.05):
+def nine_dof_thread(t=0.01):
     #global nav
     lsm = LSM9DS0()
     global nav_loader
@@ -30,5 +30,5 @@ def nine_dof_thread(t=0.05):
 
         #print(nav_loader.nav)
         #print(nav_loader.nav.accel)
-        time.sleep(.05)
+        time.sleep(.01)
 
