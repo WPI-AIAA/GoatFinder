@@ -19,6 +19,7 @@ def turn(tgtheading):
 
     #heading = nav_loader.heading
     _,_,heading,_ = nav_loader.nav.read_displacement()
+    nav_loader.nav.zero_gyro()
 
     while not (tgtheading - heading) < .017:
         time.sleep(.1)
