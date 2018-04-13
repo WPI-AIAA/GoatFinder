@@ -35,6 +35,9 @@ class navsystem(object):
         self.encoder_i = 0 # index into past encoders
         self.v_old = 0 # last measured velocity 
         #self.dt = 0.1 # 
+        self.magx = [0,0]
+        self.magy = [0,0]
+        self.magz = [0,0]
 
     def new_9dof(self,full_9dof):
         self.gyro[:,self.sensor_i] = full_9dof[0][:]
@@ -75,7 +78,28 @@ class navsystem(object):
         # transform by angles - heading and pitch
         pitch = self.gyro[self.gyro_pitch_axis,self.sensor_i]
         heading_old = self.heading;
-        self.heading = np.arctan2(self.mag[1,self.sensor_i],self.mag[0,self.sensor_i]) - self.zero_angle
+        self.heading = np.arctan2(self.mag[0,self.sensor_i]-1350,self.mag[1,self.sensor_i]-2004) - self.zero_angle
+
+        if self.mag[0,self.sensor_i] < self.magx[0]:
+            self.magx[0] = self.mag[0,self.sensor_i]
+        elif self.mag[0,self.sensor_i] > self.magx[1]:
+            self.magx[1] = self.mag[0,self.sensor_i]
+        if self.mag[1,self.sensor_i] < self.magy[0]:
+            self.magy[0] = self.mag[1,self.sensor_i]
+        elif self.mag[1,self.sensor_i] > self.magy[1]:
+            self.magy[1] = self.mag[1,self.sensor_i]
+        offsetx = self.magx[1] - self.magx[0]
+        offsety = self.magy[1] - self.magy[0]
+
+        magnitudex = self.magx[0] + self.magx[1]
+        magnitudey = self.magy[0] + self.magy[1]
+
+        print("min and max x and y: " + str([self.magx, self.magy]))
+        print("Magnitude x and y: " + str([magnitudex, magnitudey]))
+        
+
+
+
         #d = # TODO - figure out x-y-z
         heading_curr = (self.heading-heading_old)/2
         #print(heading_curr)

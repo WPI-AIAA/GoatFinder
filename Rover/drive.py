@@ -74,7 +74,10 @@ def drive(tgtlocation, location):
         #print(dy)
         dx, dy, heading,_ = nav_loader.nav.read_displacement()
 
-        
+        dx = 0
+        dy = 0
+
+
         speed = math.sqrt(math.pow(dx,2)+math.pow(dy,2))
         #delta = [math.cos(direction)*(delta[0]+delta[1])/2,math.sin(direction)*(delta[0]+delta[1])/2]
 
@@ -129,8 +132,8 @@ def drive(tgtlocation, location):
 
         print("Motor speeds:")
         print(motorspeed)
-        mot.driveleftmotor(motorspeed[0])
-        mot.driverightmotor(motorspeed[1])
+        #mot.driveleftmotor(motorspeed[0])
+        #mot.driverightmotor(motorspeed[1])
 
     mot.stopmotors()
     time.sleep(0.5)

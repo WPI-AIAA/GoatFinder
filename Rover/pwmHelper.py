@@ -24,7 +24,7 @@ servo_min = 150  # Min pulse length out of 4096
 servo_max = 600  # Max pulse length out of 4096
 
 motor_min = 100
-motor_max = 3996
+motor_max = 2000
 
 # Helper function to make setting a servo pulse width simpler.
 def set_servo_pulse(channel, pulse):
