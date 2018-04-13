@@ -35,7 +35,7 @@ from functionQueue import *
 #controller = PID(1,1,1,.5)
 
 #you can add functions to the queue
-addToQueue((dr.drive, [10,0],[0,0]))
+addToQueue((dr.drive, [1000,0],[0,0]))
 addToQueue((dr.drive, [10,10],[10,0]))
 
 print("about to start queue")

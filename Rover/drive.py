@@ -47,7 +47,7 @@ def turn(tgtheading):
     
 def drive(tgtlocation, location):
 
-    dircontroller = PID(1,0,0)
+    dircontroller = PID(1,1,0)
     speedcontroller = PID(1,0,0)
     #mot.startmotors()
     
@@ -107,10 +107,10 @@ def drive(tgtlocation, location):
         
         tgtdirection = dircontroller.update(turnerror) #amount for rover to turn CW
 
-        if tgtdirection > 1:
-            tgtdirection = 1.0
-        elif tgtdirection < -1:
-            tgtdirection = -1.0
+        if tgtdirection > 0.5:
+            tgtdirection = 0.5
+        elif tgtdirection < -0.5:
+            tgtdirection = -0.5
 
         if tgtspeed > 1:
             tgtspeed = 1.0
