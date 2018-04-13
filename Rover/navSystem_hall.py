@@ -17,7 +17,10 @@ class navsystem(object):
             ):
 
         self.gyro_gain = gyro_gain
-        self.heading_gyro
+        self.heading_gyro = 0
+        self.heading_mag = 0
+        self.heading = 0
+        self.gyro = np.zeros((3,sensor_frames_stored,), dtype = np.float32)
         self.gyro_mag_ratio = gyro_mag_ratio
         self.time = time.time()
         self.gyro_pitch_axis = gyro_pitch_axis
@@ -29,8 +32,6 @@ class navsystem(object):
         #dy = np.zeros((1,xy_frames_stored), dtype = np.float32)
         #theta = np.zeros((1,xy_frames_stored), dtype = np.float32) # unneeded
         self.accel = np.zeros((3,sensor_frames_stored,), dtype = np.float32)
-        self.gyro = np.zeros((3,sensor_frames_stored,), dtype = np.float32)
-        self.heading = 0
         self.mag = np.zeros((3,sensor_frames_stored,), dtype = np.float32)
         self.encoder = np.zeros((2,encoder_frames_stored,), dtype = np.float32)
         self.encoder_cnt = np.zeros(2, dtype = int)
@@ -88,7 +89,6 @@ class navsystem(object):
         pitch = self.gyro[self.gyro_pitch_axis,self.sensor_i]
 
         heading_old = self.heading;
-        heading_old = self.heading;
         # magnetometer heading
         heading_mag = np.arctan2((self.mag[0,self.sensor_i]-3300)*1+nav_loader.motspeed[0]*150+nav_loader.motspeed[1]*-200,(self.mag[1,self.sensor_i]+410)*2+nav_loader.motspeed[0]*-200) - self.zero_angle
 
@@ -111,10 +111,10 @@ class navsystem(object):
         print("Offset x and y: " + str([offsetx, offsety]))
         
         heading_gyro_old = self.heading_gyro
-        self.heading_gyro = np.sum(new_gyros[3,:])*gyro_gain*t/n - heading_gyro_old
+        self.heading_gyro = np.sum(new_gyros[2,:])*self.gyro_gain*t/n - heading_gyro_old
 
         heading_old = self.heading;
-        self.heading = self.heading_gyro*gyro_mag_ratio+self.heading_mag*(1-gyro_mag_ratio)
+        self.heading = self.heading_gyro*self.gyro_mag_ratio+self.heading_mag*(1-self.gyro_mag_ratio)
 
         heading_curr = self.heading+heading_old/2
         #print(heading_curr)
