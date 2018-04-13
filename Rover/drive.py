@@ -52,6 +52,7 @@ def drive(tgtlocation, location):
     speedcontroller = PID(1,0,0)
     #mot.startmotors()
     
+    nav_loader.nav.zero_gyro()
     while not iscloseenough(tgtlocation, location, 0.5): #we should determine what the correct 
         time.sleep(.1)
         #tgtlocation and location are [y,x] arrays
@@ -80,6 +81,8 @@ def drive(tgtlocation, location):
 
         location[0] += dy
         location[1] += dx
+        print("location:")
+        print(location)
 
         distanceleft = [tgtlocation[0]-location[0],tgtlocation[1]-location[1]]
 
@@ -98,7 +101,7 @@ def drive(tgtlocation, location):
 
         turnerror = tgtdirection -+ heading
 
-        print("turn error:" + str(turnerror))
+        #print("turn error:" + str(turnerror))
         print("heading:" + str(heading))
 
         if turnerror > math.pi:

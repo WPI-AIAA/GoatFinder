@@ -71,8 +71,8 @@ addToQueue([mot.stopmotors])
 '''
 
 #you can add functions to the queue
-addToQueue([dr.drive, [1000,0],[0,0]])
-addToQueue([dr.drive, [10,10],[10,0]])
+addToQueue((dr.drive, [10, 0],[0,0]))
+addToQueue((dr.drive, [10,10],[10,0]))
 
 print("about to start queue")
 sleep(5) # get some accelerometer data to avoid NaNs

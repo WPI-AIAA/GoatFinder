@@ -20,13 +20,15 @@ class navsystem(object):
             skid_err_range, # how much faster the wheels can be than the accelerometers would estimate without the system reporting slippage, as a percentage of accelerometer readings
             accel_time_step, # time between acclerometer readings, required as a factor for the reimann sum to calculate velocity
             gyro_pitch_axis, # should be Y or 1 for PCB version
-            gyro_gain = 0.000152717, # scales to radians
-            gyro_mag_ratio = 5, # ratio mixing gyro and magnetometer angles
-            mag_filter_rate = .8,
-            gyro_filter_rate = .5
+            gyro_gain = 0.00152717*2, # scales to radians
+            gyro_mag_ratio = 1, # ratio mixing gyro and magnetometer angles
+            mag_filter_rate = .9,
+            gyro_filter_rate = .8
             
             ):
 
+        self.mag_filter_rate = mag_filter_rate
+        self.gyro_filter_rate = gyro_filter_rate
         self.gyro_unfiltered = 0
         self.gyro_zero = 0
         self.gyro_gain = gyro_gain
@@ -60,6 +62,7 @@ class navsystem(object):
         #self.dt = 0.1 # 
         self.magx = [10000,0]
         self.magy = [10000,0]
+        self.zero_gyro()
 
     def new_9dof(self,full_9dof):
         self.gyro[:,self.sensor_i] = full_9dof[0][:]
@@ -106,7 +109,7 @@ class navsystem(object):
 
         heading_old = self.heading;
         # magnetometer heading
-        heading_mag = heading_mag*(1-mag_filter_rate) + mag_filter_rate*(np.arctan2((self.mag[0,self.sensor_i]-3300)*1,(self.mag[1,self.sensor_i]+410)*2) - self.zero_angle)
+        self.heading_mag = self.heading_mag*(1-self.mag_filter_rate) + self.mag_filter_rate*(np.arctan2((self.mag[0,self.sensor_i]-3300)*1,(self.mag[1,self.sensor_i]+410)*2) - self.zero_angle)
 
         #if self.mag[0,self.sensor_i] < self.magx[0]:
         #    self.magx[0] = self.mag[0,self.sensor_i]
@@ -127,8 +130,8 @@ class navsystem(object):
         #print("Offset x and y: " + str([offsetx, offsety]))
         
         x_n = self.x_n_1 + np.sum(new_gyros[2,:]-self.gyro_zero)*self.gyro_gain*t/n
-        w_n = gyro_filter_rate*x_n_1+(1-gyro_filter_rate)*self.w_n_1
-        self.heading_gyro = gyro_filter_rate*x_n+(1-gyro_filter_rate)*w_n
+        w_n = self.gyro_filter_rate*self.x_n_1+(1-self.gyro_filter_rate)*self.w_n_1
+        self.heading_gyro = self.gyro_filter_rate*x_n+(1-self.gyro_filter_rate)*w_n
         self.w_n_1 = w_n
         self.x_n_1 = x_n
         
@@ -159,8 +162,12 @@ class navsystem(object):
         gyro_sum = 0
         for n in range(200):
             gyro_sum += lsm.readGyro()[2]
+            time.sleep(.01)
         nine_dof_lock.release()
-        self.gyro_zero = gyro_sum/n + self.zero_angle
+        mag = lsm.readMag()
+        zero_mag = np.arctan2((mag[0]-3300)*1,(mag[1]+410)*2) 
+
+        self.gyro_zero = gyro_sum/n + self.zero_angle - zero_mag
 
 
     def confirm_distance(self):
