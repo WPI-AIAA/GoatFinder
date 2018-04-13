@@ -53,6 +53,7 @@ def drive(tgtlocation, location):
     #mot.startmotors()
     
     nav_loader.nav.zero_gyro()
+    nav_loader.nav.read_displacement() # ignore the first sample bc its shit
     while not iscloseenough(tgtlocation, location, 0.5): #we should determine what the correct 
         time.sleep(.1)
         #tgtlocation and location are [y,x] arrays
