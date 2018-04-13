@@ -2,16 +2,21 @@ from LSM9DS0 import LSM9DS0
 import time
 import nav_loader
 from math import isnan
+from navSystem_hall import nine_dof_lock, lsm
+
 
 class hall_thread:
     pass
 
 def nine_dof_thread(t=0.01):
     #global nav
-    lsm = LSM9DS0()
+    #lsm = LSM9DS0()
     global nav_loader
+    global lsm
+    global nine_dof_lock
     print(nav_loader.nav)
     while True:
+        nine_dof_lock.acquire()
         #nav_loader.nav.new_9dof((lsm.readGyro(),lsm.readMag(),lsm.readAccel()))
         data = (lsm.readGyro(),lsm.readMag(),lsm.readAccel())
         #print(data)
@@ -30,5 +35,7 @@ def nine_dof_thread(t=0.01):
 
         #print(nav_loader.nav)
         #print(nav_loader.nav.accel)
+        nine_dof_lock.release()
         time.sleep(.05)
+
 
