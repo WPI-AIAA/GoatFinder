@@ -74,10 +74,6 @@ def drive(tgtlocation, location):
         #print(dy)
         dx, dy, heading,_ = nav_loader.nav.read_displacement()
 
-        dx = 0
-        dy = 0
-
-
         speed = math.sqrt(math.pow(dx,2)+math.pow(dy,2))
         #delta = [math.cos(direction)*(delta[0]+delta[1])/2,math.sin(direction)*(delta[0]+delta[1])/2]
 
@@ -101,10 +97,8 @@ def drive(tgtlocation, location):
 
         turnerror = tgtdirection -+ heading
 
-        print("turn error:")
-        print(turnerror)
-        print("heading:")
-        print(heading)
+        print("turn error:" + str(turnerror))
+        print("heading:" + str(heading))
 
         if turnerror > math.pi:
             turnerror = 2*math.pi - turnerror
@@ -130,10 +124,9 @@ def drive(tgtlocation, location):
             motorspeed = [motorspeed[0]/motorspeed[1],1.0]
         motorspeed = [motorspeed[0]*tgtspeed, motorspeed[1]*tgtspeed]
 
-        print("Motor speeds:")
-        print(motorspeed)
-        #mot.driveleftmotor(motorspeed[0])
-        #mot.driverightmotor(motorspeed[1])
+        print("Motor speeds:" + str(motorspeed))
+        mot.driveleftmotor(motorspeed[0])
+        mot.driverightmotor(motorspeed[1])
 
     mot.stopmotors()
     time.sleep(0.5)
