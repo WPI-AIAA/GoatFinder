@@ -1,6 +1,14 @@
 import numpy as np
 import time
 import nav_loader
+import threading
+from LSM9DS0 import LSM9DS0
+
+global nine_dof_lock
+nine_dof_lock = threading.Lock()
+
+global lsm
+lsm = LSM9DS0()
 
 class navsystem(object):
     
@@ -14,8 +22,10 @@ class navsystem(object):
             gyro_pitch_axis, # should be Y or 1 for PCB version
             gyro_gain = 0.000152717, # scales to radians
             gyro_mag_ratio = 1 # ratio mixing gyro and magnetometer angles
+            
             ):
 
+        self.gyro_zero = 0
         self.gyro_gain = gyro_gain
         self.heading_gyro = 0
         self.heading_mag = 0
@@ -32,6 +42,7 @@ class navsystem(object):
         #dy = np.zeros((1,xy_frames_stored), dtype = np.float32)
         #theta = np.zeros((1,xy_frames_stored), dtype = np.float32) # unneeded
         self.accel = np.zeros((3,sensor_frames_stored,), dtype = np.float32)
+        heading_old = self.heading;
         self.mag = np.zeros((3,sensor_frames_stored,), dtype = np.float32)
         self.encoder = np.zeros((2,encoder_frames_stored,), dtype = np.float32)
         self.encoder_cnt = np.zeros(2, dtype = int)
@@ -111,7 +122,7 @@ class navsystem(object):
         print("Offset x and y: " + str([offsetx, offsety]))
         
         heading_gyro_old = self.heading_gyro
-        self.heading_gyro = np.sum(new_gyros[2,:])*self.gyro_gain*t/n - heading_gyro_old
+        self.heading_gyro = np.sum(new_gyros[2,:]-self.gyro_zero)*self.gyro_gain*t/n - heading_gyro_old
 
         heading_old = self.heading;
         self.heading = self.heading_gyro*self.gyro_mag_ratio+self.heading_mag*(1-self.gyro_mag_ratio)
@@ -132,6 +143,15 @@ class navsystem(object):
         #xy_i = (xy_i + 1) % xy_frames_stored
 
         return dx,dy,self.heading, self.confirm_distance()
+
+
+    def zero_gyro(self):
+        nine_dof_lock.acquire()
+        gyro_sum = 0
+        for n in range(200):
+            gyro_sum += lsm.readGyro()[2]
+        nine_dof_lock.release()
+        self.gyro_zero = gyro_sum/n
 
 
     def confirm_distance(self):
