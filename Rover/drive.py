@@ -47,7 +47,7 @@ def turn(tgtheading):
     
 def drive(tgtlocation, location):
 
-    dircontroller = PID(1,1,0)
+    dircontroller = PID(1,0,0)
     speedcontroller = PID(1,0,0)
     #mot.startmotors()
     
@@ -125,6 +125,9 @@ def drive(tgtlocation, location):
         motorspeed = [motorspeed[0]*tgtspeed, motorspeed[1]*tgtspeed]
 
         print("Motor speeds:" + str(motorspeed))
+
+        nav_loader.motspeed = motorspeed[:]
+
         mot.driveleftmotor(motorspeed[0])
         mot.driverightmotor(motorspeed[1])
 

@@ -34,11 +34,16 @@ from functionQueue import *
 #testing PID
 #controller = PID(1,1,1,.5)
 
+sleep(5)
+
 import motorOutput as mot
 
-while True:
-        for i in range (0,11):
-                mot.driveleftmotor(i/10)
+#while True:
+#        for i in range (0,11):
+#                mot.driveleftmotor(i/10)
+#                mot.driverightmotor(i/10)
+#                nav_loader.nav.read_displacement()
+#                sleep(1)
 
 
 #you can add functions to the queue

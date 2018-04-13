@@ -1,5 +1,6 @@
 import numpy as np
 import time
+import nav_loader
 
 class navsystem(object):
     
@@ -77,7 +78,7 @@ class navsystem(object):
         # transform by angles - heading and pitch
         pitch = self.gyro[self.gyro_pitch_axis,self.sensor_i]
         heading_old = self.heading;
-        self.heading = np.arctan2((self.mag[0,self.sensor_i]-3300)*1,(self.mag[1,self.sensor_i]+410)*2) - self.zero_angle
+        self.heading = np.arctan2((self.mag[0,self.sensor_i]-3300)*1+nav_loader.motspeed[0]*150+nav_loader.motspeed[1]*-200,(self.mag[1,self.sensor_i]+410)*2+nav_loader.motspeed[0]*-200) - self.zero_angle
 
         if self.mag[0,self.sensor_i] < self.magx[0]:
             self.magx[0] = self.mag[0,self.sensor_i]
