@@ -21,12 +21,17 @@ class navsystem(object):
             accel_time_step, # time between acclerometer readings, required as a factor for the reimann sum to calculate velocity
             gyro_pitch_axis, # should be Y or 1 for PCB version
             gyro_gain = 0.000152717, # scales to radians
-            gyro_mag_ratio = 1 # ratio mixing gyro and magnetometer angles
+            gyro_mag_ratio = 5, # ratio mixing gyro and magnetometer angles
+            mag_filter_rate = .8,
+            gyro_filter_rate = .5
             
             ):
 
+        self.gyro_unfiltered = 0
         self.gyro_zero = 0
         self.gyro_gain = gyro_gain
+        self.x_n_1 = 0
+        self.w_n_1 = 0
         self.heading_gyro = 0
         self.heading_mag = 0
         self.heading = 0
@@ -101,28 +106,32 @@ class navsystem(object):
 
         heading_old = self.heading;
         # magnetometer heading
-        heading_mag = np.arctan2((self.mag[0,self.sensor_i]-3300)*1+nav_loader.motspeed[0]*150+nav_loader.motspeed[1]*-200,(self.mag[1,self.sensor_i]+410)*2+nav_loader.motspeed[0]*-200) - self.zero_angle
+        heading_mag = heading_mag*(1-mag_filter_rate) + mag_filter_rate*(np.arctan2((self.mag[0,self.sensor_i]-3300)*1,(self.mag[1,self.sensor_i]+410)*2) - self.zero_angle)
 
-        if self.mag[0,self.sensor_i] < self.magx[0]:
-            self.magx[0] = self.mag[0,self.sensor_i]
-        elif self.mag[0,self.sensor_i] > self.magx[1]:
-            self.magx[1] = self.mag[0,self.sensor_i]
-        if self.mag[1,self.sensor_i] < self.magy[0]:
-            self.magy[0] = self.mag[1,self.sensor_i]
-        elif self.mag[1,self.sensor_i] > self.magy[1]:
-            self.magy[1] = self.mag[1,self.sensor_i]
+        #if self.mag[0,self.sensor_i] < self.magx[0]:
+        #    self.magx[0] = self.mag[0,self.sensor_i]
+        #elif self.mag[0,self.sensor_i] > self.magx[1]:
+        #    self.magx[1] = self.mag[0,self.sensor_i]
+        #if self.mag[1,self.sensor_i] < self.magy[0]:
+        #    self.magy[0] = self.mag[1,self.sensor_i]
+        #elif self.mag[1,self.sensor_i] > self.magy[1]:
+        #    self.magy[1] = self.mag[1,self.sensor_i]
             
-        offsetx = (self.magx[1] + self.magx[0])/2
-        offsety = (self.magy[1] + self.magy[0])/2
+        #offsetx = (self.magx[1] + self.magx[0])/2
+        #offsety = (self.magy[1] + self.magy[0])/2
 
-        magnitudex = self.magx[0] + self.magx[1]
-        magnitudey = self.magy[0] + self.magy[1]
+        #magnitudex = self.magx[0] + self.magx[1]
+        #magnitudey = self.magy[0] + self.magy[1]
 
-        print("min and max x and y: " + str([self.magx, self.magy]))
-        print("Offset x and y: " + str([offsetx, offsety]))
+        #print("min and max x and y: " + str([self.magx, self.magy]))
+        #print("Offset x and y: " + str([offsetx, offsety]))
         
-        heading_gyro_old = self.heading_gyro
-        self.heading_gyro = np.sum(new_gyros[2,:]-self.gyro_zero)*self.gyro_gain*t/n - heading_gyro_old
+        x_n = self.x_n_1 + np.sum(new_gyros[2,:]-self.gyro_zero)*self.gyro_gain*t/n
+        w_n = gyro_filter_rate*x_n_1+(1-gyro_filter_rate)*self.w_n_1
+        self.heading_gyro = gyro_filter_rate*x_n+(1-gyro_filter_rate)*w_n
+        self.w_n_1 = w_n
+        self.x_n_1 = x_n
+        
 
         heading_old = self.heading;
         self.heading = self.heading_gyro*self.gyro_mag_ratio+self.heading_mag*(1-self.gyro_mag_ratio)
@@ -151,7 +160,7 @@ class navsystem(object):
         for n in range(200):
             gyro_sum += lsm.readGyro()[2]
         nine_dof_lock.release()
-        self.gyro_zero = gyro_sum/n
+        self.gyro_zero = gyro_sum/n + self.zero_angle
 
 
     def confirm_distance(self):
