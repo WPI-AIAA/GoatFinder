@@ -22,7 +22,7 @@ def initializealt():
     isstationary()
 
     #records initial altitude
-    initialalt = getpressure()
+    initialalt = getalt()
 
 def isstationary():
     global deltat

@@ -15,8 +15,11 @@ def mainQueue():
 if __name__ == '__main__':
     def aFunction(arg):
         print(arg)
+    def ddd():
+        print("ddd")
     print("start")
-    q.put((aFunction, "henlo python"))
+    q.put([ddd])
+    q.put([aFunction, "henlo python"])
     q.put((aFunction, "hello you STINKY snake"))
     q.put((aFunction, "go eat a java ugly"))
     mainQueue()
