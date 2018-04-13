@@ -34,6 +34,13 @@ from functionQueue import *
 #testing PID
 #controller = PID(1,1,1,.5)
 
+import motorOutput as mot
+
+while True:
+        for i in range (0,11):
+                mot.driveleftmotor(i/10)
+
+
 #you can add functions to the queue
 addToQueue((dr.drive, [1000,0],[0,0]))
 addToQueue((dr.drive, [10,10],[10,0]))
