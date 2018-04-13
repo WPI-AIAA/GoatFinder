@@ -11,9 +11,14 @@ class navsystem(object):
             encoder_distance, # distance of one encoder tick
             skid_err_range, # how much faster the wheels can be than the accelerometers would estimate without the system reporting slippage, as a percentage of accelerometer readings
             accel_time_step, # time between acclerometer readings, required as a factor for the reimann sum to calculate velocity
-            gyro_pitch_axis # should be Y or 1 for PCB version
+            gyro_pitch_axis, # should be Y or 1 for PCB version
+            gyro_gain = 0.000152717, # scales to radians
+            gyro_mag_ratio = 1 # ratio mixing gyro and magnetometer angles
             ):
 
+        self.gyro_gain = gyro_gain
+        self.heading_gyro
+        self.gyro_mag_ratio = gyro_mag_ratio
         self.time = time.time()
         self.gyro_pitch_axis = gyro_pitch_axis
         self.accel_time_step = accel_time_step
@@ -59,12 +64,16 @@ class navsystem(object):
         #create list of new acceleration readings and number of time steps
         if (self.sensor_i > self.sensor_last_i): # if array has not looped around
             new_accels = self.accel[:, self.sensor_last_i+1:self.sensor_i]
+            new_gyros = self.gyro[:, self.sensor_last_i+1:self.sensor_i]
             n = self.sensor_i - self.sensor_last_i
 
         else: # if array has looped around
             new_accels = np.hstack((              # concatenate...
                     self.accel[:, self.sensor_last_i:], # last to end and ...
                     self.accel[:, :self.sensor_i]))      # begininning to current
+            new_gyros = np.hstack((              # concatenate...
+                    self.gyro[:, self.sensor_last_i:], # last to end and ...
+                    self.gyro[:, :self.sensor_i]))      # begininning to current
             n = self.sensor_frames_stored + self.sensor_i - self.sensor_last_i
 
         # calculate next velocity:
@@ -77,8 +86,11 @@ class navsystem(object):
 
         # transform by angles - heading and pitch
         pitch = self.gyro[self.gyro_pitch_axis,self.sensor_i]
+
         heading_old = self.heading;
-        self.heading = np.arctan2((self.mag[0,self.sensor_i]-3300)*1+nav_loader.motspeed[0]*150+nav_loader.motspeed[1]*-200,(self.mag[1,self.sensor_i]+410)*2+nav_loader.motspeed[0]*-200) - self.zero_angle
+        heading_old = self.heading;
+        # magnetometer heading
+        heading_mag = np.arctan2((self.mag[0,self.sensor_i]-3300)*1+nav_loader.motspeed[0]*150+nav_loader.motspeed[1]*-200,(self.mag[1,self.sensor_i]+410)*2+nav_loader.motspeed[0]*-200) - self.zero_angle
 
         if self.mag[0,self.sensor_i] < self.magx[0]:
             self.magx[0] = self.mag[0,self.sensor_i]
@@ -98,11 +110,13 @@ class navsystem(object):
         print("min and max x and y: " + str([self.magx, self.magy]))
         print("Offset x and y: " + str([offsetx, offsety]))
         
+        heading_gyro_old = self.heading_gyro
+        self.heading_gyro = np.sum(new_gyros[3,:])*gyro_gain*t/n - heading_gyro_old
 
+        heading_old = self.heading;
+        self.heading = self.heading_gyro*gyro_mag_ratio+self.heading_mag*(1-gyro_mag_ratio)
 
-
-        #d = # TODO - figure out x-y-z
-        heading_curr = (self.heading-heading_old)/2
+        heading_curr = self.heading+heading_old/2
         #print(heading_curr)
         #print(pitch)
         dx = -d[0]*np.cos(heading_curr)*np.cos(pitch)
