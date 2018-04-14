@@ -2,9 +2,9 @@ import time
 import GPIO
 import datetime
 
+//Hall effects are 23 and 24
 
-//These pins are not the correct pins
-GPIO.setup(17 , GPIO.IN)
+GPIO.setup(23 , GPIO.IN)
 
 GPIO.add_event_detect(17, GPIO.BOTH, callback=sensorCallback1)
 
